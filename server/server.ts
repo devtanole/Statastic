@@ -92,6 +92,163 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
   }
 });
 
+app.get('/api/fighters', authMiddleware, async (req, res, next) => {
+  try {
+    const sql = `
+    select f."fighterId",
+    f."firstName",
+    f."lastName",
+    f."dob",
+    f."finishes",
+    f."weightMisses",
+    f."pullOuts",
+    m."height",
+    m."weight",
+    m."dateRecorded" as "lastMeasuredAt"
+    from "fighters" f
+    left join (
+      select distinct on ("fighterId")
+        "fighterId",
+        "height",
+        "weight",
+        "dateRecorded"
+      from "measurements"
+      order by "fighterId", "dateRecorded" desc
+    ) m on f."fighterId" = m."fighterId"
+    order by f."lastName" asc, f."firstName" asc;
+    `;
+    const result = await db.query(sql);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/fighters/:fighterId', authMiddleware, async (req, res, next) => {
+  try {
+    const { fighterId } = req.params;
+    if (fighterId === undefined) {
+      throw new ClientError(400, `fighterId not found`);
+    }
+    const sql = `
+    select
+      f."fighterId",
+        f."firstName",
+        f."lastName",
+        f."dob",
+        f."finishes",
+        f."weightMisses",
+        f."pullOuts",
+        f."notes",
+        m."height",
+        m."weight",
+        m."dateRecorded" as "lastMeasuredAt"
+      from "fighters" f
+      left join (
+        select distinct on ("fighterId")
+          "fighterId",
+          "height",
+          "weight",
+          "dateRecorded"
+        from "measurements"
+        order by "fighterId", "dateRecorded" desc
+      ) m on f."fighterId" = m."fighterId"
+      where f."fighterId" = $1;
+    `;
+    const params = [fighterId];
+    const result = await db.query(sql, params);
+    const fighter = result.rows[0];
+    if (!fighter) {
+      throw new ClientError(404, `fighter ${fighterId} not found`);
+    }
+    res.json(fighter);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get(
+  '/api/fighters/:fighterId/measurements',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { fighterId } = req.params;
+      const sql = `
+    select "measurementId", "fighterId", "height", "weight", "dateRecorded"
+    from "measurements"
+    where "fighterId" = $1
+    order by "dateRecorded" desc
+    limit 5;
+    `;
+
+      const params = [fighterId];
+      const result = await db.query<Measurement>(sql, params);
+      const measurements = result.rows;
+      res.json(measurements);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.get(
+  '/api/fighters/:fighterId/fights',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const fighterId = Number(req.params.fighterId);
+
+      if (!Number.isInteger(fighterId)) {
+        throw new ClientError(400, 'fighterId must be an integer');
+      }
+      const sql = `
+      select * from "fightRecords"
+      where "fighterId" = $1
+      order by "date" desc;
+    `;
+      const params = [fighterId];
+      const result = await db.query(sql, params);
+      res.json(result.rows);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.get(
+  '/api/fighters/:fighterId/fights/:fightId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const fightId = Number(req.params.fightId);
+
+      if (!Number.isInteger(fightId)) {
+        throw new ClientError(400, 'fightId must be an integer');
+      }
+
+      const sql = `
+      select *
+      from "fightRecords"
+      where "fightId" = $1;
+    `;
+
+      const params = [fightId];
+
+      const result = await db.query(sql, params);
+
+      const fight = result.rows[0];
+
+      if (!fight) {
+        throw new ClientError(404, `fight ${fightId} not found`);
+      }
+
+      res.json(fight);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
