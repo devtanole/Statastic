@@ -11,8 +11,8 @@ CREATE TABLE "users" (
   "fullName" text NOT NULL,
   "username" text UNIQUE NOT NULL,
   "hashedPassword" text NOT NULL,
-  "createdAt" timestamptz NOT NULL,
-  "updatedAt" timestamptz NOT NULL
+  "createdAt" timestamptz NOT NULL DEFAULT now(),
+  "updatedAt" timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE "fighters" (
@@ -24,8 +24,8 @@ CREATE TABLE "fighters" (
   "weightMisses" integer,
   "pullOuts" integer,
   "notes" text,
-  "createdAt" timestamptz NOT NULL,
-  "updatedAt" timestamptz NOT NULL
+  "createdAt" timestamptz NOT NULL DEFAULT now(),
+  "updatedAt" timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE "fightRecords" (
@@ -35,8 +35,8 @@ CREATE TABLE "fightRecords" (
   "outcome" varchar NOT NULL,
   "method" varchar,
   "promotion" text,
-  "createdAt" timestamptz NOT NULL,
-  "updatedAt" timestamptz NOT NULL
+  "createdAt" timestamptz NOT NULL DEFAULT now(),
+  "updatedAt" timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE "measurements" (

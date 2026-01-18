@@ -249,6 +249,88 @@ app.get(
   }
 );
 
+app.post('/api/fighters', authMiddleware, async (req, res, next) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      dob,
+      finishes,
+      weightMisses,
+      pullOuts,
+      notes,
+    } = req.body as Partial<Fighter>;
+    if (!firstName || !lastName || !dob) {
+      throw new ClientError(400, 'firstName, lastName and dob are required');
+    }
+    const sql = `
+    insert into "fighters" ("firstName", "lastName", "dob", "finishes", "weightMisses", "pullOuts", "notes")
+    values ($1, $2, $3, $4, $5, $6, $7)
+    returning *;
+    `;
+    const params = [
+      firstName,
+      lastName,
+      dob,
+      finishes ?? 0,
+      weightMisses ?? 0,
+      pullOuts ?? 0,
+      notes ?? null,
+    ];
+    const result = await db.query(sql, params);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/fighters/:fighterId/measurements', async (req, res, next) => {
+  try {
+    const { fighterId } = req.params;
+    const { height, weight, dateRecorded } = req.body;
+    if (!height || !weight || !dateRecorded || !fighterId) {
+      throw new ClientError(400, 'a required field is missing');
+    }
+    const sql = `
+  insert into "measurements" ("fighterId", "height", "weight", "dateRecorded")
+  values ($1, $2, $3, $4)
+  returning *;
+  `;
+    const params = [fighterId, height, weight, dateRecorded];
+    const result = await db.query<Measurement>(sql, params);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/fighters/:fighterId/fights', async (req, res, next) => {
+  try {
+    const { fighterId } = req.params;
+    const { date, outcome, method, promotion } = req.body;
+
+    if (!fighterId || !outcome) {
+      throw new ClientError(400, 'fighterId and outcome are required');
+    }
+    const sql = `
+    insert into "fightRecords" ("fighterId", "date", "outcome", "method", "promotion")
+    values ($1, $2, $3, $4, $5)
+    returning *
+    `;
+    const params = [
+      fighterId,
+      date,
+      outcome,
+      method ?? null,
+      promotion ?? null,
+    ];
+    const result = await db.query(sql, params);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
