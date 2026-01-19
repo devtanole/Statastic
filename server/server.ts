@@ -421,6 +421,61 @@ app.delete(
   }
 );
 
+app.put('/api/fighters/:fighterId', authMiddleware, async (req, res, next) => {
+  try {
+    const fighterId = Number(req.params.fighterId);
+    if (!Number.isInteger(fighterId) || fighterId < 1) {
+      throw new ClientError(400, 'fighterId must be a positive integer');
+    }
+    const {
+      firstName,
+      lastName,
+      dob,
+      finishes,
+      weightMisses,
+      pullOuts,
+      notes,
+    } = req.body as Partial<Fighter>;
+    if (!firstName || !lastName || !dob) {
+      throw new ClientError(400, 'firstName, lastName and dob are required');
+    }
+    const sql = `
+    update "fighters"
+      set "updatedAt" = now(),
+          "firstName" = $1,
+          "lastName" = $2,
+          "dob" = $3,
+          "finishes" = $4,
+          "weightMisses" = $5,
+          "pullOuts" = $6,
+          "notes" = $7
+        where "fighterId" = $8
+        returning *;
+    `;
+    const params = [
+      firstName,
+      lastName,
+      dob,
+      finishes ?? 0,
+      weightMisses ?? 0,
+      pullOuts ?? 0,
+      notes ?? null,
+      fighterId,
+    ];
+    const result = await db.query(sql, params);
+    const updatedFighter = result.rows[0];
+    if (!updatedFighter) {
+      throw new ClientError(
+        404,
+        `cannot find fighter of fighterId ${fighterId}`
+      );
+    }
+    res.json(updatedFighter);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
