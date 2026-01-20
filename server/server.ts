@@ -476,6 +476,91 @@ app.put('/api/fighters/:fighterId', authMiddleware, async (req, res, next) => {
   }
 });
 
+app.put(
+  '/api/fighters/:fighterId/measurements/:measurementId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const fighterId = Number(req.params.fighterId);
+      const measurementId = Number(req.params.measurementId);
+      if (!Number.isInteger(fighterId) || fighterId < 1) {
+        throw new ClientError(400, 'fighterId must be a positive integer');
+      }
+      if (!Number.isInteger(measurementId) || measurementId < 1) {
+        throw new ClientError(400, 'measurementId must be a positive integer');
+      }
+      const { height, weight, dateRecorded } = req.body;
+      if (!height || !weight || !dateRecorded) {
+        throw new ClientError(
+          400,
+          'height, weight and dateRecorded are required'
+        );
+      }
+      const sql = `
+    update "measurements"
+      set "height" = $1,
+          "weight" = $2,
+          "dateRecorded" = $3
+        where "measurementId" = $4 and "fighterId" = $5
+        returning *;
+    `;
+      const params = [height, weight, dateRecorded, measurementId, fighterId];
+      const result = await db.query(sql, params);
+      const updatedMeasurement = result.rows[0];
+      if (!updatedMeasurement) {
+        throw new ClientError(
+          404,
+          `cannot find measurementId of ${measurementId}`
+        );
+      }
+      res.json(updatedMeasurement);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.put(
+  '/api/fighters/:fighterId/fights/:fightId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const fighterId = Number(req.params.fighterId);
+      const fightId = Number(req.params.fightId);
+      if (!Number.isInteger(fighterId) || fighterId < 1) {
+        throw new ClientError(400, 'fighterId must be a positive integer');
+      }
+      if (!Number.isInteger(fightId) || fightId < 1) {
+        throw new ClientError(400, 'fightId must be a positive integer');
+      }
+      const { date, outcome, method, promotion } =
+        req.body as Partial<FightRecord>;
+      if (!outcome) {
+        throw new ClientError(400, 'outcome required');
+      }
+      const sql = `
+      update "fightRecords"
+        set "updatedAt" = now(),
+            "date" = $1,
+            "outcome" = $2,
+            "method" = $3,
+            "promotion" = $4
+          where "fightId" = $5 and "fighterId" = $6
+          returning *;
+      `;
+      const params = [date, outcome, method, promotion, fightId, fighterId];
+      const result = await db.query(sql, params);
+      const updatedFight = result.rows[0];
+      if (!updatedFight) {
+        throw new ClientError(404, `cannot find fight of fightId: ${fightId}`);
+      }
+      res.json(updatedFight);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
