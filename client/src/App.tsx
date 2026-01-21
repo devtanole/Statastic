@@ -1,5 +1,14 @@
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import { AuthPage } from './pages/AuthPage';
 
 export default function App() {
-  return <></>;
+  return (
+    <Routes>
+      {/* <Route path="/" element={<Header />}> */}
+      <Route index element={<AuthPage mode="sign-up" />} />
+      <Route path="/auth/sign-in" element={<AuthPage mode="sign-in" />} />
+      {/* </Route> */}
+    </Routes>
+  );
 }
