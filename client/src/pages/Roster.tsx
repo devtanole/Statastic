@@ -11,6 +11,7 @@ export function Roster() {
 
   useEffect(() => {
     async function load() {
+      setIsLoading(true);
       try {
         const fighters = await readFighters();
         setFighters(fighters);

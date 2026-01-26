@@ -20,6 +20,14 @@ type Auth = {
   token: string;
 };
 
+export type Measurement = {
+  measurementId: number;
+  fighterId: number;
+  height: number;
+  weight: number;
+  dateRecorded: string;
+};
+
 const authKey = 'um.auth';
 
 export function saveAuth(user: User, token: string): void {
@@ -55,4 +63,31 @@ export async function readFighters(): Promise<Fighter[]> {
   const res = await fetch(`/api/fighters`, req);
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
   return (await res.json()) as Fighter[];
+}
+
+export async function readFighter(fighterId: number): Promise<Fighter> {
+  const token = readToken();
+  const req = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(`/api/fighters/${fighterId}`, req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Fighter;
+}
+
+export async function readMeasurements(
+  fighterId: number
+): Promise<Measurement[]> {
+  const token = readToken();
+  const req = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(`/api/fighters/${fighterId}/measurements`, req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+
+  return (await res.json()) as Measurement[];
 }
