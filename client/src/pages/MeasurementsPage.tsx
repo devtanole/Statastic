@@ -1,12 +1,17 @@
 import { useParams } from 'react-router-dom';
-import { Fighter, Fight, readFighter, readFights } from '../lib/data';
+import {
+  Fighter,
+  Measurement,
+  readFighter,
+  readMeasurements,
+} from '../lib/data';
 import { useEffect, useState } from 'react';
-import { FightList } from '../components/FightList';
+import { MeasurementsList } from '../components/MeasurementList';
 
-export function FightHistory() {
+export function MeasurementsPage() {
   const { fighterId } = useParams();
   const [fighter, setFighter] = useState<Fighter | null>(null);
-  const [fights, setFights] = useState<Fight[]>([]);
+  const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,10 +23,12 @@ export function FightHistory() {
         const fighter = await readFighter(Number(fighterId));
         setFighter(fighter);
 
-        const fights = await readFights(Number(fighterId));
-        setFights(fights);
+        const measurements = await readMeasurements(Number(fighterId));
+        setMeasurements(measurements);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error loading fights');
+        setError(
+          err instanceof Error ? err.message : 'Error loading measurements'
+        );
       } finally {
         setIsLoading(false);
       }
@@ -34,14 +41,14 @@ export function FightHistory() {
   if (!fighter) return <div>Fighter not found</div>;
 
   return (
-    <div className="fights">
+    <div className="measurements">
       <h2>
         {fighter.firstName} {fighter.lastName}
       </h2>
-      {fights.length === 0 ? (
-        <p>No fights recorded yet.</p>
+      {measurements.length === 0 ? (
+        <p>No measurements recorded yet.</p>
       ) : (
-        <FightList fights={fights} />
+        <MeasurementsList measurements={measurements} />
       )}
     </div>
   );

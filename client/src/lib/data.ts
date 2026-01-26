@@ -28,6 +28,15 @@ export type Measurement = {
   dateRecorded: string;
 };
 
+export type Fight = {
+  fightId: number;
+  fighterId: number;
+  date?: string;
+  outcome: string;
+  method?: string;
+  promotion?: string;
+};
+
 const authKey = 'um.auth';
 
 export function saveAuth(user: User, token: string): void {
@@ -90,4 +99,17 @@ export async function readMeasurements(
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
 
   return (await res.json()) as Measurement[];
+}
+
+export async function readFights(fighterId: number): Promise<Fight[]> {
+  const token = readToken();
+  const req = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(`/api/fighters/${fighterId}/fights`, req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+
+  return (await res.json()) as Fight[];
 }

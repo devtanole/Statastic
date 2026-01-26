@@ -2,6 +2,7 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import { AuthPage } from './pages/AuthPage';
 import { Roster } from './pages/Roster';
+import { FighterPage } from './pages/FighterPage';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Route index element={<AuthPage mode="sign-up" />} />
       <Route path="/auth/sign-in" element={<AuthPage mode="sign-in" />} />
       <Route path="/fighters" element={<Roster />} />
+      <Route path="/fighters/:fightId" element={FighterPage} />
       {/* </Route> */}
     </Routes>
   );
