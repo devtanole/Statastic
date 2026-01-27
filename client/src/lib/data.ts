@@ -113,3 +113,56 @@ export async function readFights(fighterId: number): Promise<Fight[]> {
 
   return (await res.json()) as Fight[];
 }
+
+export async function addFighter(fighter: Fighter): Promise<Fighter> {
+  const token = readToken();
+  const req = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(fighter),
+  };
+  const res = await fetch('/api/fighters', req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Fighter;
+}
+
+export async function addMeasurement(
+  fighterId: number,
+  measurement: Omit<Measurement, 'measurementId' | 'fighterId'>
+): Promise<Measurement> {
+  const token = readToken();
+
+  const res = await fetch(`/api/fighters/${fighterId}/measurements`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(measurement),
+  });
+
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Measurement;
+}
+
+export async function addFight(
+  fighterId: number,
+  fight: Omit<Fight, 'fightId' | 'fighterId'>
+): Promise<Fight> {
+  const token = readToken();
+
+  const res = await fetch(`/api/fighters/${fighterId}/fights`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(fight),
+  });
+
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Fight;
+}
