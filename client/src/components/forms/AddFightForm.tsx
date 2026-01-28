@@ -54,14 +54,13 @@ export function FightForm() {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          required
         />
       </label>
 
       <label>
         Outcome
         <input
-          type="string"
+          type="text"
           value={outcome}
           onChange={(e) => setOutcome(e.target.value)}
           required
@@ -71,20 +70,18 @@ export function FightForm() {
       <label>
         Method
         <input
-          type="string"
+          type="text"
           value={method}
           onChange={(e) => setMethod(e.target.value)}
-          required
         />
       </label>
 
       <label>
         Promotion
         <input
-          type="string"
+          type="text"
           value={promotion}
           onChange={(e) => setPromotion(e.target.value)}
-          required
         />
       </label>
 
