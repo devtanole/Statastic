@@ -9,6 +9,13 @@ export type Fighter = {
   notes?: string;
 };
 
+export interface NewFighter {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  notes?: string;
+}
+
 export type User = {
   userId: number;
   fullName: string;
@@ -127,7 +134,7 @@ export async function readFights(fighterId: number): Promise<Fight[]> {
   return (await res.json()) as Fight[];
 }
 
-export async function addFighter(fighter: Fighter): Promise<Fighter> {
+export async function addFighter(fighter: NewFighter): Promise<Fighter> {
   const token = readToken();
   const req = {
     method: 'POST',
