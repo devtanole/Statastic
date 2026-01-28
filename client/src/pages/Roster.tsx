@@ -41,7 +41,7 @@ export function Roster() {
           style={{ paddingBottom: '1rem' }}>
           <h1> Fighters </h1>
           <h3>
-            <Link to="/details/new" className="white-text form-link">
+            <Link to="/fighters/new" className="white-text form-link">
               NEW
             </Link>
           </h3>

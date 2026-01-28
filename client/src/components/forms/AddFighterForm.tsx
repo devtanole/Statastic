@@ -78,11 +78,7 @@ export function FighterForm() {
 
       <label>
         Notes
-        <input
-          type="text"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </label>
 
       <button disabled={isSubmitting}>
