@@ -28,6 +28,12 @@ export type Measurement = {
   dateRecorded: string;
 };
 
+export interface NewMeasurement {
+  height: number;
+  weight: number;
+  dateRecorded: string;
+}
+
 export type Fight = {
   fightId: number;
   fighterId: number;
@@ -36,6 +42,13 @@ export type Fight = {
   method?: string;
   promotion?: string;
 };
+
+export interface NewFight {
+  date?: string;
+  outcome: string;
+  method?: string;
+  promotion?: string;
+}
 
 const authKey = 'um.auth';
 
@@ -131,7 +144,7 @@ export async function addFighter(fighter: Fighter): Promise<Fighter> {
 
 export async function addMeasurement(
   fighterId: number,
-  measurement: Omit<Measurement, 'measurementId' | 'fighterId'>
+  measurement: NewMeasurement
 ): Promise<Measurement> {
   const token = readToken();
 
