@@ -186,3 +186,62 @@ export async function addFight(
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
   return (await res.json()) as Fight;
 }
+
+export async function updateFight(
+  fightId: number,
+  fight: NewFight,
+  fighterId: number
+): Promise<Fight> {
+  const token = readToken();
+  const req = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(fight),
+  };
+  const res = await fetch(`/api/fighters/${fighterId}/fights/${fightId}`, req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Fight;
+}
+
+export async function updateMeasurement(
+  measurementId: number,
+  measurement: NewMeasurement,
+  fighterId: number
+): Promise<Measurement> {
+  const token = readToken();
+  const req = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(measurement),
+  };
+  const res = await fetch(
+    `/api/fighters/${fighterId}/measurements/${measurementId}`,
+    req
+  );
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Measurement;
+}
+
+export async function updateFighter(
+  fighterId: number,
+  fighter: NewFighter
+): Promise<Fighter> {
+  const token = readToken();
+  const req = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(fighter),
+  };
+  const res = await fetch(`/api/fighters/${fighterId}`, req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return (await res.json()) as Fighter;
+}
