@@ -42,7 +42,7 @@ export function Roster() {
           <h1> Fighters </h1>
           <h3>
             <Link to="/fighters/new" className="white-text form-link">
-              NEW
+              + New Fighter
             </Link>
           </h3>
         </div>

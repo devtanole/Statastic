@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Fighter, Fight, readFighter, readFights } from '../lib/data';
 import { useEffect, useState } from 'react';
 import { FightList } from '../components/FightList';
@@ -38,6 +38,7 @@ export function FightHistory() {
       <h2>
         {fighter.firstName} {fighter.lastName}
       </h2>
+      <Link to={`/fighters/${fighterId}/fights/new`}>+ Add Fight</Link>
       {fights.length === 0 ? (
         <p>No fights recorded yet.</p>
       ) : (

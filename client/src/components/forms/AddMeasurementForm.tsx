@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { addMeasurement, NewMeasurement } from '../../lib/data';
 
 export function MeasurementForm() {
@@ -10,6 +10,7 @@ export function MeasurementForm() {
   const [dateRecorded, setDateRecorded] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,10 +31,12 @@ export function MeasurementForm() {
 
       await addMeasurement(Number(fighterId), newMeasurement);
 
+      navigate(`/fighters/${fighterId}/measurements`);
+
       // optional: reset form
-      setHeight('');
-      setWeight('');
-      setDateRecorded('');
+      // setHeight('');
+      // setWeight('');
+      // setDateRecorded('');
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to add measurement'

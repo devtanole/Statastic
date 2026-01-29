@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { addFighter, NewFighter } from '../../lib/data';
 
 export function FighterForm() {
@@ -10,6 +10,7 @@ export function FighterForm() {
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,13 +30,14 @@ export function FighterForm() {
         notes,
       };
 
-      await addFighter(newFighter);
+      const fighter = await addFighter(newFighter);
+      navigate(`/fighters/${fighter.fighterId}`);
 
       // optional: reset form
-      setFirstName('');
-      setLastName('');
-      setDob('');
-      setNotes('');
+      // setFirstName('');
+      // setLastName('');
+      // setDob('');
+      // setNotes('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to add fight');
     } finally {

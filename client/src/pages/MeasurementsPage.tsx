@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   Fighter,
   Measurement,
@@ -45,6 +45,9 @@ export function MeasurementsPage() {
       <h2>
         {fighter.firstName} {fighter.lastName}
       </h2>
+      <Link to={`/fighters/${fighterId}/measurements/new`}>
+        + Add Measurement
+      </Link>
       {measurements.length === 0 ? (
         <p>No measurements recorded yet.</p>
       ) : (
