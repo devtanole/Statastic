@@ -1,16 +1,27 @@
 import { FormEvent, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { addMeasurement, NewMeasurement } from '../../lib/data';
+import {
+  addMeasurement,
+  NewMeasurement,
+  Measurement,
+  // updateMeasurement,
+  // readMeasurements,
+} from '../../lib/data';
 
-export function MeasurementForm() {
+type Props = {
+  initialData?: Measurement;
+};
+
+export function MeasurementForm({ initialData }: Props) {
   const { fighterId } = useParams();
-
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
-  const [dateRecorded, setDateRecorded] = useState('');
+  const navigate = useNavigate();
+  const [height, setHeight] = useState(initialData?.height || '');
+  const [weight, setWeight] = useState(initialData?.weight || '');
+  const [dateRecorded, setDateRecorded] = useState(
+    initialData?.dateRecorded || ''
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

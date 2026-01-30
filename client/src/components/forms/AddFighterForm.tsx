@@ -1,117 +1,108 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   addFighter,
-  NewFighter,
-  Fighter,
   updateFighter,
   readFighter,
+  NewFighter,
 } from '../../lib/data';
 
-type Props = {
-  initialData?: Fighter;
-};
-
-export function FighterForm({ initialData }: Props) {
+export function FighterForm() {
   const { fighterId } = useParams();
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState(initialData?.firstName || '');
-  const [lastName, setLastName] = useState(initialData?.lastName || '');
-  const [dob, setDob] = useState(initialData?.dob || '');
-  const [finishes, setFinishes] = useState(initialData?.finishes || '');
-  const [weightMisses, setWeightMisses] = useState(
-    initialData?.weightMisses || ''
-  );
-  const [pullOuts, setPullOuts] = useState(initialData?.pullOuts || '');
-  const [notes, setNotes] = useState(initialData?.notes || '');
+
+  const isEdit = Boolean(fighterId);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dob, setDob] = useState('');
+  const [finishes, setFinishes] = useState('');
+  const [weightMisses, setWeightMisses] = useState('');
+  const [pullOuts, setPullOuts] = useState('');
+  const [notes, setNotes] = useState('');
+
+  const [isLoading, setIsLoading] = useState(isEdit);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 🔹 PREFILL FOR EDIT
   useEffect(() => {
+    if (!isEdit) return;
+
     async function load() {
-      if (!initialData && fighterId) {
-        try {
-          const fighter = await readFighter(Number(fighterId));
-          setFirstName(fighter.firstName);
-          setLastName(fighter.lastName);
-          setDob(fighter.dob);
-          setFinishes(fighter.finishes?.toString() || '');
-          setWeightMisses(fighter.weightMisses?.toString() || '');
-          setPullOuts(fighter.pullOuts?.toString() || '');
-          setNotes(fighter.notes || '');
-        } catch (err) {
-          setError(
-            err instanceof Error ? err.message : 'Error loading fighter'
-          );
-        }
+      try {
+        const fighter = await readFighter(Number(fighterId));
+
+        setFirstName(fighter.firstName);
+        setLastName(fighter.lastName);
+        setDob(fighter.dob);
+        setFinishes(fighter.finishes?.toString() ?? '');
+        setWeightMisses(fighter.weightMisses?.toString() ?? '');
+        setPullOuts(fighter.pullOuts?.toString() ?? '');
+        setNotes(fighter.notes ?? '');
+      } catch {
+        setError('Failed to load fighter');
+      } finally {
+        setIsLoading(false);
       }
     }
+
     load();
-  }, [fighterId, initialData]);
+  }, [fighterId, isEdit]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!fighterId && !initialData) {
-      setError('fighterId missing');
-      return;
-    }
-
-    const newFighter: NewFighter = {
-      firstName,
-      lastName,
-      dob,
-      finishes: Number(finishes),
-      weightMisses: Number(weightMisses),
-      pullOuts: Number(pullOuts),
-      notes,
-    };
-
     try {
       setIsSubmitting(true);
 
-      if (initialData) {
-        // Edit mode
-        await updateFighter(Number(fighterId), newFighter);
-      } else {
-        // Create mode
-        const created = await addFighter(newFighter);
-        navigate(`/fighters/${created.fighterId}`);
-        return;
-      }
+      const payload: NewFighter = {
+        firstName,
+        lastName,
+        dob,
+        finishes: finishes ? Number(finishes) : null,
+        weightMisses: weightMisses ? Number(weightMisses) : null,
+        pullOuts: pullOuts ? Number(pullOuts) : null,
+        notes: notes || null,
+      };
 
-      // optional: reset form
-      // setFirstName('');
-      // setLastName('');
-      // setDob('');
-      // setNotes('');
+      if (isEdit) {
+        await updateFighter(Number(fighterId), payload);
+        navigate(`/fighters/${fighterId}`);
+      } else {
+        const created = await addFighter(payload);
+        navigate(`/fighters/${created.fighterId}`);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add fight');
+      setError(err instanceof Error ? err.message : 'Save failed');
     } finally {
       setIsSubmitting(false);
     }
   }
+
+  if (isLoading) return <div>Loading…</div>;
+
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Add Fighter</h3>
+      <h2>{isEdit ? 'Edit Fighter' : 'Add Fighter'}</h2>
 
       {error && <div className="error">{error}</div>}
 
       <label>
         First Name
         <input
-          type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+          required
         />
       </label>
 
       <label>
         Last Name
         <input
-          type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          required
         />
       </label>
 
@@ -158,7 +149,11 @@ export function FighterForm({ initialData }: Props) {
       </label>
 
       <button disabled={isSubmitting}>
-        {isSubmitting ? 'Saving…' : 'Add Fighter'}
+        {isSubmitting
+          ? 'Saving…'
+          : isEdit
+          ? 'Update Fighter'
+          : 'Create Fighter'}
       </button>
     </form>
   );

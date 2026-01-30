@@ -9,15 +9,7 @@ export type Fighter = {
   notes: string | null;
 };
 
-export interface NewFighter {
-  firstName: string;
-  lastName: string;
-  dob: string;
-  finishes?: number;
-  weightMisses?: number;
-  pullOuts?: number;
-  notes?: string;
-}
+export type NewFighter = Omit<Fighter, 'fighterId'>;
 
 export type User = {
   userId: number;
