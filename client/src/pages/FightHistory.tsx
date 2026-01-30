@@ -42,7 +42,7 @@ export function FightHistory() {
       {fights.length === 0 ? (
         <p>No fights recorded yet.</p>
       ) : (
-        <FightList fights={fights} />
+        <FightList fights={fights} fighterId={Number(fighterId)} />
       )}
     </div>
   );

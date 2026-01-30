@@ -187,6 +187,33 @@ app.get('/api/fighters/:fighterId/measurements', async (req, res, next) => {
   }
 });
 
+app.get(
+  '/api/fighters/:fighterId/measurements/:measurementId',
+  async (req, res, next) => {
+    try {
+      const fighterId = Number(req.params.fighterId);
+      const measurementId = Number(req.params.measurementId);
+      const sql = `
+    select *
+    from "measurements"
+    where "measurementId" = $1
+      and "fighterId" = $2;
+    `;
+
+      const params = [measurementId, fighterId];
+      const result = await db.query<Measurement>(sql, params);
+      const measurement = result.rows[0];
+      if (!measurement) {
+        res.status(404).json({ error: 'Measurement not found' });
+        return;
+      }
+      res.json(measurement);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 app.get('/api/fighters/:fighterId/fights', async (req, res, next) => {
   try {
     const fighterId = Number(req.params.fighterId);
@@ -209,6 +236,7 @@ app.get('/api/fighters/:fighterId/fights', async (req, res, next) => {
 
 app.get('/api/fighters/:fighterId/fights/:fightId', async (req, res, next) => {
   try {
+    const fighterId = Number(req.params.fighterId);
     const fightId = Number(req.params.fightId);
 
     if (!Number.isInteger(fightId)) {
@@ -218,10 +246,11 @@ app.get('/api/fighters/:fighterId/fights/:fightId', async (req, res, next) => {
     const sql = `
       select *
       from "fightRecords"
-      where "fightId" = $1;
+      where "fightId" = $1
+        and "fighterId" = $2;
     `;
 
-    const params = [fightId];
+    const params = [fightId, fighterId];
 
     const result = await db.query(sql, params);
 
@@ -409,7 +438,7 @@ app.delete(
   }
 );
 
-app.put('/api/fighters/:fighterId', authMiddleware, async (req, res, next) => {
+app.put('/api/fighters/:fighterId', async (req, res, next) => {
   try {
     const fighterId = Number(req.params.fighterId);
     if (!Number.isInteger(fighterId) || fighterId < 1) {
@@ -466,7 +495,6 @@ app.put('/api/fighters/:fighterId', authMiddleware, async (req, res, next) => {
 
 app.put(
   '/api/fighters/:fighterId/measurements/:measurementId',
-  authMiddleware,
   async (req, res, next) => {
     try {
       const fighterId = Number(req.params.fighterId);
@@ -508,25 +536,22 @@ app.put(
   }
 );
 
-app.put(
-  '/api/fighters/:fighterId/fights/:fightId',
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      const fighterId = Number(req.params.fighterId);
-      const fightId = Number(req.params.fightId);
-      if (!Number.isInteger(fighterId) || fighterId < 1) {
-        throw new ClientError(400, 'fighterId must be a positive integer');
-      }
-      if (!Number.isInteger(fightId) || fightId < 1) {
-        throw new ClientError(400, 'fightId must be a positive integer');
-      }
-      const { date, outcome, method, promotion } =
-        req.body as Partial<FightRecord>;
-      if (!outcome) {
-        throw new ClientError(400, 'outcome required');
-      }
-      const sql = `
+app.put('/api/fighters/:fighterId/fights/:fightId', async (req, res, next) => {
+  try {
+    const fighterId = Number(req.params.fighterId);
+    const fightId = Number(req.params.fightId);
+    if (!Number.isInteger(fighterId) || fighterId < 1) {
+      throw new ClientError(400, 'fighterId must be a positive integer');
+    }
+    if (!Number.isInteger(fightId) || fightId < 1) {
+      throw new ClientError(400, 'fightId must be a positive integer');
+    }
+    const { date, outcome, method, promotion } =
+      req.body as Partial<FightRecord>;
+    if (!outcome) {
+      throw new ClientError(400, 'outcome required');
+    }
+    const sql = `
       update "fightRecords"
         set "updatedAt" = now(),
             "date" = $1,
@@ -536,18 +561,17 @@ app.put(
           where "fightId" = $5 and "fighterId" = $6
           returning *;
       `;
-      const params = [date, outcome, method, promotion, fightId, fighterId];
-      const result = await db.query(sql, params);
-      const updatedFight = result.rows[0];
-      if (!updatedFight) {
-        throw new ClientError(404, `cannot find fight of fightId: ${fightId}`);
-      }
-      res.json(updatedFight);
-    } catch (err) {
-      next(err);
+    const params = [date, outcome, method, promotion, fightId, fighterId];
+    const result = await db.query(sql, params);
+    const updatedFight = result.rows[0];
+    if (!updatedFight) {
+      throw new ClientError(404, `cannot find fight of fightId: ${fightId}`);
     }
+    res.json(updatedFight);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;

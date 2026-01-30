@@ -51,7 +51,10 @@ export function MeasurementsPage() {
       {measurements.length === 0 ? (
         <p>No measurements recorded yet.</p>
       ) : (
-        <MeasurementsList measurements={measurements} />
+        <MeasurementsList
+          measurements={measurements}
+          fighterId={Number(fighterId)}
+        />
       )}
     </div>
   );

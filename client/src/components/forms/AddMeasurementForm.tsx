@@ -1,26 +1,26 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  NewMeasurement,
-  readMeasurement,
   addMeasurement,
   updateMeasurement,
+  readMeasurement,
+  NewMeasurement,
 } from '../../lib/data';
 
 export function MeasurementForm() {
   const { fighterId, measurementId } = useParams();
   const navigate = useNavigate();
-
   const isEditing = Boolean(measurementId);
 
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState<number | ''>('');
+  const [weight, setWeight] = useState<number | ''>('');
   const [dateRecorded, setDateRecorded] = useState('');
+
   const [isLoading, setIsLoading] = useState(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔹 Prefill ONLY when editing
+  // 🧠 Prefill when editing
   useEffect(() => {
     if (!isEditing) return;
 
@@ -33,10 +33,10 @@ export function MeasurementForm() {
           Number(measurementId)
         );
 
-        setHeight(String(m.height));
-        setWeight(String(m.weight));
-        setDateRecorded(m.dateRecorded.slice(0, 10));
-      } catch (err) {
+        setHeight(m.height);
+        setWeight(m.weight);
+        setDateRecorded(m.dateRecorded.split('T')[0]); // YYYY-MM-DD
+      } catch {
         setError('Failed to load measurement');
       } finally {
         setIsLoading(false);
@@ -46,8 +46,8 @@ export function MeasurementForm() {
     load();
   }, [isEditing, fighterId, measurementId]);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     if (!fighterId) return;
 
@@ -72,7 +72,7 @@ export function MeasurementForm() {
 
       navigate(`/fighters/${fighterId}/measurements`);
     } catch (err) {
-      setError('Save failed');
+      setError(err instanceof Error ? err.message : 'Save failed');
     } finally {
       setIsSubmitting(false);
     }
@@ -87,27 +87,31 @@ export function MeasurementForm() {
       {error && <div className="error">{error}</div>}
 
       <label>
-        Height
+        Height (inches)
         <input
           type="number"
           value={height}
-          onChange={(e) => setHeight(e.target.value)}
+          onChange={(e) =>
+            setHeight(e.target.value ? Number(e.target.value) : '')
+          }
           required
         />
       </label>
 
       <label>
-        Weight
+        Weight (lbs)
         <input
           type="number"
           value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          onChange={(e) =>
+            setWeight(e.target.value ? Number(e.target.value) : '')
+          }
           required
         />
       </label>
 
       <label>
-        Date
+        Date Recorded
         <input
           type="date"
           value={dateRecorded}
@@ -121,7 +125,7 @@ export function MeasurementForm() {
           ? 'Saving…'
           : isEditing
           ? 'Update Measurement'
-          : 'Create Measurement'}
+          : 'Add Measurement'}
       </button>
     </form>
   );

@@ -35,7 +35,7 @@ export function FighterForm() {
 
         setFirstName(fighter.firstName);
         setLastName(fighter.lastName);
-        setDob(fighter.dob);
+        setDob(fighter.dob.split('T')[0]);
         setFinishes(fighter.finishes?.toString() ?? '');
         setWeightMisses(fighter.weightMisses?.toString() ?? '');
         setPullOuts(fighter.pullOuts?.toString() ?? '');

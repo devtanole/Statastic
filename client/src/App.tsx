@@ -14,27 +14,36 @@ export default function App() {
   return (
     <Routes>
       {/* <Route path="/" element={<Header />}> */}
+      {/* auth page */}
       <Route path="/auth/sign-up" element={<AuthPage mode="sign-up" />} />
       <Route path="/auth/sign-in" element={<AuthPage mode="sign-in" />} />
 
+      {/* Main roster page */}
       <Route path="/" element={<Roster />} />
 
       <Route path="/fighters/new" element={<FighterForm />} />
-
+      {/* Fighter routes with nested tabs */}
       <Route path="/fighters/:fighterId" element={<FighterLayout />}>
+        {/* Overview tab */}
         <Route index element={<FighterPage />} />
-        <Route
-          path="/fighters/:fighterId/measurements"
-          element={<MeasurementsPage />}
-        />
-        <Route path="/fighters/:fighterId/fights" element={<FightHistory />} />
 
+        {/* Measurements tab */}
+        <Route path="measurements" element={<MeasurementsPage />} />
+        <Route path="measurements/new" element={<MeasurementForm />} />
         <Route
-          path="/fighters/:fighterId/measurements/new"
+          path="measurements/:measurementId/edit"
           element={<MeasurementForm />}
         />
-        <Route path="/fighters/:fighterId/fights/new" element={<FightForm />} />
+
+        {/* Fight history tab */}
+        <Route path="fights" element={<FightHistory />} />
+        <Route path="fights/new" element={<FightForm />} />
+        <Route path="fights/:fightId/edit" element={<FightForm />} />
+
+        {/* Edit fighter form */}
+        <Route path="edit" element={<FighterForm />} />
       </Route>
+      <Route path="*" element={<div>Page not found</div>} />
       {/* </Route> */}
     </Routes>
   );

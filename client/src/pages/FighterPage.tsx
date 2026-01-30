@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Fighter, readFighter } from '../lib/data';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export function FighterPage() {
   const { fighterId } = useParams();
@@ -32,10 +33,13 @@ export function FighterPage() {
       <h1>
         {fighter.firstName} {fighter.lastName}
       </h1>
-      <p>DOB: {fighter.dob}</p>
-      <p>Finishes: {fighter.finishes ?? 0}</p>
-      <p>Weight Misses: {fighter.weightMisses ?? 0}</p>
-      <p>Pull Outs: {fighter.pullOuts ?? 0}</p>
+      <Link to={`/fighters/${fighterId}/edit`}>Edit</Link>
+      <div className="stats">
+        <p>DOB: {fighter.dob.slice(0, 10)}</p>
+        <p>Finishes: {fighter.finishes ?? 0}</p>
+        <p>Weight Misses: {fighter.weightMisses ?? 0}</p>
+        <p>Pull Outs: {fighter.pullOuts ?? 0}</p>
+      </div>
     </div>
   );
 }
