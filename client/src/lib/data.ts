@@ -123,6 +123,25 @@ export async function readMeasurement(
   return (await res.json()) as Measurement;
 }
 
+export async function readFight(
+  fighterId: number,
+  fightId: number
+): Promise<Fight> {
+  const token = readToken();
+
+  const res = await fetch(`/api/fighters/${fighterId}/fights/${fightId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`fetch Error ${res.status}`);
+  }
+
+  return (await res.json()) as Fight;
+}
+
 export async function readMeasurements(
   fighterId: number
 ): Promise<Measurement[]> {

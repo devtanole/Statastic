@@ -1,52 +1,76 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { addFight, NewFight } from '../../lib/data';
+import { addFight, NewFight, updateFight, readFight } from '../../lib/data';
 
 export function FightForm() {
-  const { fighterId } = useParams();
+  const { fighterId, fightId } = useParams();
+  const navigate = useNavigate();
+  const isEditing = Boolean(fightId);
   const [date, setDate] = useState('');
   const [outcome, setOutcome] = useState('');
   const [method, setMethod] = useState('');
   const [promotion, setPromotion] = useState('');
+  const [isLoading, setIsLoading] = useState(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  useEffect(() => {
+    if (!isEditing) return;
 
-    if (!fighterId) {
-      setError('fighterId missing');
-      return;
+    async function load() {
+      try {
+        if (!fighterId || !fightId) return;
+
+        const f = await readFight(Number(fighterId), Number(fightId));
+
+        setDate(f.date?.slice(0, 10) ?? '');
+        setOutcome(f.outcome);
+        setMethod(f.method ?? '');
+        setPromotion(f.promotion ?? '');
+      } catch (err) {
+        setError('Failed to load fight');
+      } finally {
+        setIsLoading(false);
+      }
     }
+
+    load();
+  }, [isEditing, fighterId, fightId]);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!fighterId) return;
 
     try {
       setIsSubmitting(true);
 
-      const newFight: NewFight = {
+      const payload: NewFight = {
         date,
         outcome,
         method,
         promotion,
       };
 
-      await addFight(Number(fighterId), newFight);
-      navigate(`/fighters/${fighterId}/fights`);
+      if (isEditing && fightId) {
+        await updateFight(Number(fightId), payload, Number(fighterId));
+      } else {
+        await addFight(Number(fighterId), payload);
+      }
 
-      // optional: reset form
-      // setDate('');
-      // setOutcome('');
-      // setMethod('');
-      // setPromotion('');
+      navigate(`/fighters/${fighterId}/fights`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add fight');
+      setError('Save failed');
     } finally {
       setIsSubmitting(false);
     }
   }
+
+  if (isLoading) return <div>Loading…</div>;
+
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Add Fight</h3>
+      <h3>{isEditing ? 'Edit Fight' : 'Add Fight'}</h3>
 
       {error && <div className="error">{error}</div>}
 
@@ -88,7 +112,7 @@ export function FightForm() {
       </label>
 
       <button disabled={isSubmitting}>
-        {isSubmitting ? 'Saving…' : 'Add Fight'}
+        {isSubmitting ? 'Saving…' : isEditing ? 'Update Fight' : 'Create Fight'}
       </button>
     </form>
   );

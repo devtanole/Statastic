@@ -11,18 +11,18 @@ export function MeasurementForm() {
   const { fighterId, measurementId } = useParams();
   const navigate = useNavigate();
 
-  const isEdit = Boolean(measurementId);
+  const isEditing = Boolean(measurementId);
 
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [dateRecorded, setDateRecorded] = useState('');
-  const [isLoading, setIsLoading] = useState(isEdit);
+  const [isLoading, setIsLoading] = useState(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 🔹 Prefill ONLY when editing
   useEffect(() => {
-    if (!isEdit) return;
+    if (!isEditing) return;
 
     async function load() {
       try {
@@ -44,7 +44,7 @@ export function MeasurementForm() {
     }
 
     load();
-  }, [isEdit, fighterId, measurementId]);
+  }, [isEditing, fighterId, measurementId]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -60,7 +60,7 @@ export function MeasurementForm() {
         dateRecorded,
       };
 
-      if (isEdit && measurementId) {
+      if (isEditing && measurementId) {
         await updateMeasurement(
           Number(measurementId),
           payload,
@@ -82,7 +82,7 @@ export function MeasurementForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>{isEdit ? 'Edit Measurement' : 'Add Measurement'}</h3>
+      <h3>{isEditing ? 'Edit Measurement' : 'Add Measurement'}</h3>
 
       {error && <div className="error">{error}</div>}
 
@@ -117,7 +117,11 @@ export function MeasurementForm() {
       </label>
 
       <button disabled={isSubmitting}>
-        {isSubmitting ? 'Saving…' : 'Save'}
+        {isSubmitting
+          ? 'Saving…'
+          : isEditing
+          ? 'Update Measurement'
+          : 'Create Measurement'}
       </button>
     </form>
   );
