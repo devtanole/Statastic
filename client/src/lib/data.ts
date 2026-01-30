@@ -101,6 +101,28 @@ export async function readFighter(fighterId: number): Promise<Fighter> {
   return (await res.json()) as Fighter;
 }
 
+export async function readMeasurement(
+  fighterId: number,
+  measurementId: number
+): Promise<Measurement> {
+  const token = readToken();
+
+  const res = await fetch(
+    `/api/fighters/${fighterId}/measurements/${measurementId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`fetch Error ${res.status}`);
+  }
+
+  return (await res.json()) as Measurement;
+}
+
 export async function readMeasurements(
   fighterId: number
 ): Promise<Measurement[]> {

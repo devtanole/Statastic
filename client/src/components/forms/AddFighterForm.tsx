@@ -11,7 +11,7 @@ export function FighterForm() {
   const { fighterId } = useParams();
   const navigate = useNavigate();
 
-  const isEdit = Boolean(fighterId);
+  const isEditing = Boolean(fighterId);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -21,13 +21,13 @@ export function FighterForm() {
   const [pullOuts, setPullOuts] = useState('');
   const [notes, setNotes] = useState('');
 
-  const [isLoading, setIsLoading] = useState(isEdit);
+  const [isLoading, setIsLoading] = useState(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 🔹 PREFILL FOR EDIT
   useEffect(() => {
-    if (!isEdit) return;
+    if (!isEditing) return;
 
     async function load() {
       try {
@@ -48,7 +48,7 @@ export function FighterForm() {
     }
 
     load();
-  }, [fighterId, isEdit]);
+  }, [fighterId, isEditing]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -66,7 +66,7 @@ export function FighterForm() {
         notes: notes || null,
       };
 
-      if (isEdit) {
+      if (isEditing) {
         await updateFighter(Number(fighterId), payload);
         navigate(`/fighters/${fighterId}`);
       } else {
@@ -84,7 +84,7 @@ export function FighterForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>{isEdit ? 'Edit Fighter' : 'Add Fighter'}</h2>
+      <h2>{isEditing ? 'Edit Fighter' : 'Add Fighter'}</h2>
 
       {error && <div className="error">{error}</div>}
 
@@ -151,7 +151,7 @@ export function FighterForm() {
       <button disabled={isSubmitting}>
         {isSubmitting
           ? 'Saving…'
-          : isEdit
+          : isEditing
           ? 'Update Fighter'
           : 'Create Fighter'}
       </button>

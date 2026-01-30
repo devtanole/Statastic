@@ -1,65 +1,88 @@
-import { FormEvent, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
-  addMeasurement,
   NewMeasurement,
-  Measurement,
-  // updateMeasurement,
-  // readMeasurements,
+  readMeasurement,
+  addMeasurement,
+  updateMeasurement,
 } from '../../lib/data';
 
-type Props = {
-  initialData?: Measurement;
-};
-
-export function MeasurementForm({ initialData }: Props) {
-  const { fighterId } = useParams();
+export function MeasurementForm() {
+  const { fighterId, measurementId } = useParams();
   const navigate = useNavigate();
-  const [height, setHeight] = useState(initialData?.height || '');
-  const [weight, setWeight] = useState(initialData?.weight || '');
-  const [dateRecorded, setDateRecorded] = useState(
-    initialData?.dateRecorded || ''
-  );
+
+  const isEdit = Boolean(measurementId);
+
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [dateRecorded, setDateRecorded] = useState('');
+  const [isLoading, setIsLoading] = useState(isEdit);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  // 🔹 Prefill ONLY when editing
+  useEffect(() => {
+    if (!isEdit) return;
 
-    if (!fighterId) {
-      setError('fighterId missing');
-      return;
+    async function load() {
+      try {
+        if (!fighterId || !measurementId) return;
+
+        const m = await readMeasurement(
+          Number(fighterId),
+          Number(measurementId)
+        );
+
+        setHeight(String(m.height));
+        setWeight(String(m.weight));
+        setDateRecorded(m.dateRecorded.slice(0, 10));
+      } catch (err) {
+        setError('Failed to load measurement');
+      } finally {
+        setIsLoading(false);
+      }
     }
+
+    load();
+  }, [isEdit, fighterId, measurementId]);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!fighterId) return;
 
     try {
       setIsSubmitting(true);
 
-      const newMeasurement: NewMeasurement = {
+      const payload: NewMeasurement = {
         height: Number(height),
         weight: Number(weight),
         dateRecorded,
       };
 
-      await addMeasurement(Number(fighterId), newMeasurement);
+      if (isEdit && measurementId) {
+        await updateMeasurement(
+          Number(measurementId),
+          payload,
+          Number(fighterId)
+        );
+      } else {
+        await addMeasurement(Number(fighterId), payload);
+      }
 
       navigate(`/fighters/${fighterId}/measurements`);
-
-      // optional: reset form
-      // setHeight('');
-      // setWeight('');
-      // setDateRecorded('');
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to add measurement'
-      );
+      setError('Save failed');
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  if (isLoading) return <div>Loading…</div>;
+
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Add Measurement</h3>
+      <h3>{isEdit ? 'Edit Measurement' : 'Add Measurement'}</h3>
 
       {error && <div className="error">{error}</div>}
 
@@ -67,7 +90,6 @@ export function MeasurementForm({ initialData }: Props) {
         Height
         <input
           type="number"
-          step="0.1"
           value={height}
           onChange={(e) => setHeight(e.target.value)}
           required
@@ -78,7 +100,6 @@ export function MeasurementForm({ initialData }: Props) {
         Weight
         <input
           type="number"
-          step="0.1"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
           required
@@ -86,7 +107,7 @@ export function MeasurementForm({ initialData }: Props) {
       </label>
 
       <label>
-        Date Recorded
+        Date
         <input
           type="date"
           value={dateRecorded}
@@ -96,7 +117,7 @@ export function MeasurementForm({ initialData }: Props) {
       </label>
 
       <button disabled={isSubmitting}>
-        {isSubmitting ? 'Saving…' : 'Add Measurement'}
+        {isSubmitting ? 'Saving…' : 'Save'}
       </button>
     </form>
   );
