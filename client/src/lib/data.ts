@@ -3,16 +3,19 @@ export type Fighter = {
   firstName: string;
   lastName: string;
   dob: string;
-  finishes?: number;
-  weightMisses?: number;
-  pullOuts?: number;
-  notes?: string;
+  finishes: number | null;
+  weightMisses: number | null;
+  pullOuts: number | null;
+  notes: string | null;
 };
 
 export interface NewFighter {
   firstName: string;
   lastName: string;
   dob: string;
+  finishes?: number;
+  weightMisses?: number;
+  pullOuts?: number;
   notes?: string;
 }
 
