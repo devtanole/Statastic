@@ -348,50 +348,41 @@ app.post('/api/fighters/:fighterId/fights', async (req, res, next) => {
   }
 });
 
-app.delete(
-  '/api/fighters/:fighterId',
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      const { fighterId } = req.params;
-      if (!Number.isInteger(+fighterId)) {
-        throw new ClientError(400, `Non-integer fighterId: ${fighterId}`);
-      }
-      const sql = `
+app.delete('/api/fighters/:fighterId', async (req, res, next) => {
+  try {
+    const { fighterId } = req.params;
+    if (!Number.isInteger(+fighterId)) {
+      throw new ClientError(400, `Non-integer fighterId: ${fighterId}`);
+    }
+    const sql = `
     delete from "fighters"
     where "fighterId" = $1
     returning *;
     `;
-      const params = [fighterId];
-      const result = await db.query(sql, params);
-      const [fighter] = result.rows;
-      if (!fighter)
-        throw new ClientError(404, `fighter ${fighterId} not found`);
-      res.status(200).json(fighter);
-    } catch (err) {
-      next(err);
-    }
+    const params = [fighterId];
+    const result = await db.query(sql, params);
+    const [fighter] = result.rows;
+    if (!fighter) throw new ClientError(404, `fighter ${fighterId} not found`);
+    res.status(200).json(fighter);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 app.delete(
   '/api/fighters/:fighterId/fights/:fightId',
-  authMiddleware,
   async (req, res, next) => {
     try {
-      const { fightId, fighterId } = req.params;
+      const { fightId } = req.params;
       if (!Number.isInteger(+fightId)) {
         throw new ClientError(400, `Non-integer fightId: ${fightId}`);
       }
-      if (!Number.isInteger(fighterId)) {
-        throw new ClientError(400, `Non-integer fighterId: ${fighterId}`);
-      }
       const sql = `
     delete from "fightRecords"
-    where "fightId" = $1 and "fighterId" = $2
+    where "fightId" = $1
     returning *;
     `;
-      const params = [fightId, fighterId];
+      const params = [fightId];
       const result = await db.query(sql, params);
       const [fight] = result.rows;
       if (!fight) {
@@ -406,30 +397,23 @@ app.delete(
 
 app.delete(
   '/api/fighters/:fighterId/measurements/:measurementId',
-  authMiddleware,
   async (req, res, next) => {
     try {
-      const { fighterId, measurementId } = req.params;
-      if (!Number.isInteger(fighterId)) {
-        throw new ClientError(400, `invalid fighterId: ${fighterId}`);
-      }
+      const { measurementId } = req.params;
 
       if (!Number.isInteger(measurementId)) {
         throw new ClientError(400, `invalid measurementId: ${measurementId}`);
       }
       const sql = `
       delete from "measurements"
-      where "measurementId" = $1 and "fighterId" = $2
+      where "measurementId" = $1
       returning *;
       `;
-      const params = [measurementId, fighterId];
+      const params = [measurementId];
       const result = await db.query(sql, params);
       const [measurement] = result.rows;
       if (!measurement) {
-        throw new ClientError(
-          404,
-          `measurement ${measurementId} not found for fighter ${fighterId}`
-        );
+        throw new ClientError(404, `measurement ${measurementId} not found `);
       }
       res.status(200).json(measurement);
     } catch (err) {

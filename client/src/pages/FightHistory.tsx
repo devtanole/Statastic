@@ -33,6 +33,10 @@ export function FightHistory() {
   if (error) return <div>{error}</div>;
   if (!fighter) return <div>Fighter not found</div>;
 
+  function handleDelete(fightId: number) {
+    setFights((prev) => prev.filter((f) => f.fightId !== fightId));
+  }
+
   return (
     <div className="fights">
       <h2>
@@ -42,7 +46,11 @@ export function FightHistory() {
       {fights.length === 0 ? (
         <p>No fights recorded yet.</p>
       ) : (
-        <FightList fights={fights} fighterId={Number(fighterId)} />
+        <FightList
+          fights={fights}
+          fighterId={Number(fighterId)}
+          onDelete={handleDelete}
+        />
       )}
     </div>
   );

@@ -281,3 +281,18 @@ export async function updateFighter(
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
   return (await res.json()) as Fighter;
 }
+
+export async function removeFight(
+  fightId: number,
+  fighterId: number
+): Promise<void> {
+  const token = readToken();
+  const req = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(`/api/fighters/${fighterId}/fights/${fightId}`, req);
+  if (!res.ok) throw new Error(`Fetch Error ${res.status}`);
+}
