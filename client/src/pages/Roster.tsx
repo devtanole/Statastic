@@ -32,6 +32,9 @@ export function Roster() {
       </div>
     );
   }
+  function handleDelete(fighterId: number) {
+    setFighters((prev) => prev.filter((f) => f.fighterId !== fighterId));
+  }
 
   return (
     <div className="container" style={{ padding: '1.5rem' }}>
@@ -51,7 +54,11 @@ export function Roster() {
         <div className="column-full">
           <ul className="fighter-ul">
             {fighters.map((fighter) => (
-              <FighterCard key={fighter.fighterId} fighter={fighter} />
+              <FighterCard
+                key={fighter.fighterId}
+                onDelete={handleDelete}
+                fighter={fighter}
+              />
             ))}
           </ul>
         </div>
