@@ -296,3 +296,33 @@ export async function removeFight(
   const res = await fetch(`/api/fighters/${fighterId}/fights/${fightId}`, req);
   if (!res.ok) throw new Error(`Fetch Error ${res.status}`);
 }
+
+export async function removeMeasurement(
+  measurementId: number,
+  fighterId: number
+): Promise<void> {
+  const token = readToken();
+  const req = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(
+    `/api/fighters/${fighterId}/measurements/${measurementId}`,
+    req
+  );
+  if (!res.ok) throw new Error(`Fetch Error ${res.status}`);
+}
+
+export async function removeFighter(fighterId: number): Promise<void> {
+  const token = readToken();
+  const req = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(`/api/fighters/${fighterId}`, req);
+  if (!res.ok) throw new Error(`Fetch Error ${res.status}`);
+}

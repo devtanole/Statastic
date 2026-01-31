@@ -7,12 +7,27 @@ export function FightForm() {
   const navigate = useNavigate();
   const isEditing = Boolean(fightId);
   const [date, setDate] = useState('');
-  const [outcome, setOutcome] = useState('');
+  const [outcome, setOutcome] = useState('win');
   const [method, setMethod] = useState('');
   const [promotion, setPromotion] = useState('');
   const [isLoading, setIsLoading] = useState(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const outcomeOptions = [
+    { value: 'win', label: 'Win' },
+    { value: 'loss', label: 'Loss' },
+    { value: 'draw', label: 'Draw' },
+    { value: 'nc', label: 'No Contest' },
+  ];
+
+  const methodOptions = [
+    { value: '', label: 'Select method' },
+    { value: 'KO', label: 'KO' },
+    { value: 'TKO', label: 'TKO' },
+    { value: 'Submission', label: 'Submission' },
+    { value: 'Decision', label: 'Decision' },
+  ];
 
   useEffect(() => {
     if (!isEditing) return;
@@ -85,21 +100,27 @@ export function FightForm() {
 
       <label>
         Outcome
-        <input
-          type="text"
+        <select
           value={outcome}
           onChange={(e) => setOutcome(e.target.value)}
-          required
-        />
+          required>
+          {outcomeOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label>
         Method
-        <input
-          type="text"
-          value={method}
-          onChange={(e) => setMethod(e.target.value)}
-        />
+        <select value={method} onChange={(e) => setMethod(e.target.value)}>
+          {methodOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label>
