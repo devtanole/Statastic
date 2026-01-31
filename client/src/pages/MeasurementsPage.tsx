@@ -40,6 +40,12 @@ export function MeasurementsPage() {
   if (error) return <div>{error}</div>;
   if (!fighter) return <div>Fighter not found</div>;
 
+  function handleDelete(measurementId: number) {
+    setMeasurements((prev) =>
+      prev.filter((m) => m.measurementId !== measurementId)
+    );
+  }
+
   return (
     <div className="measurements">
       <h2>
@@ -54,6 +60,7 @@ export function MeasurementsPage() {
         <MeasurementsList
           measurements={measurements}
           fighterId={Number(fighterId)}
+          onDelete={handleDelete}
         />
       )}
     </div>

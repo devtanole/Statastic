@@ -4,9 +4,10 @@ import { Measurement } from '../lib/data';
 type Props = {
   measurements: Measurement[];
   fighterId: number;
+  onDelete: (measurementId: number) => void;
 };
 
-export function MeasurementsList({ measurements, fighterId }: Props) {
+export function MeasurementsList({ measurements, fighterId, onDelete }: Props) {
   return (
     <ul>
       {measurements.map((m) => (
@@ -14,6 +15,7 @@ export function MeasurementsList({ measurements, fighterId }: Props) {
           key={m.measurementId}
           fighterId={Number(fighterId)}
           measurement={m}
+          onDelete={onDelete}
         />
       ))}
     </ul>

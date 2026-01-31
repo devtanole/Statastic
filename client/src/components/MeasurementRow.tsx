@@ -1,9 +1,11 @@
 import { Measurement } from '../lib/data';
 import { Link } from 'react-router-dom';
+import { removeMeasurement } from '../lib/data';
 
 type Props = {
   measurement: Measurement;
   fighterId: number;
+  onDelete: (measurementId: number) => void;
 };
 
 function formatHeight(heightInInches: number): string {
@@ -15,7 +17,13 @@ function formatHeight(heightInInches: number): string {
 // Example:
 formatHeight(70); // "5' 10""
 
-export function MeasurementRow({ measurement, fighterId }: Props) {
+export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
+  async function handleDelete() {
+    if (!confirm('Delete this fight?')) return;
+
+    await removeMeasurement(measurement.measurementId, fighterId);
+    onDelete(measurement.measurementId);
+  }
   return (
     <>
       <li>
@@ -26,6 +34,7 @@ export function MeasurementRow({ measurement, fighterId }: Props) {
         to={`/fighters/${fighterId}/measurements/${measurement.measurementId}/edit`}>
         Edit
       </Link>
+      <button onClick={handleDelete}>x</button>
     </>
   );
 }

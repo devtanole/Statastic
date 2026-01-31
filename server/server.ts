@@ -399,7 +399,7 @@ app.delete(
   '/api/fighters/:fighterId/measurements/:measurementId',
   async (req, res, next) => {
     try {
-      const { measurementId } = req.params;
+      const measurementId = Number(req.params.measurementId);
 
       if (!Number.isInteger(measurementId)) {
         throw new ClientError(400, `invalid measurementId: ${measurementId}`);
@@ -411,6 +411,9 @@ app.delete(
       `;
       const params = [measurementId];
       const result = await db.query(sql, params);
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: 'Measurement not found' });
+      }
       const [measurement] = result.rows;
       if (!measurement) {
         throw new ClientError(404, `measurement ${measurementId} not found `);
