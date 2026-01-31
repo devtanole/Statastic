@@ -9,42 +9,45 @@ import { FighterLayout } from './pages/FightLayout';
 import { MeasurementForm } from './components/forms/AddMeasurementForm';
 import { FightForm } from './components/forms/AddFightForm';
 import { FighterForm } from './components/forms/AddFighterForm';
+import { UserProvider } from './components/UserContext';
 
 export default function App() {
   return (
-    <Routes>
-      {/* <Route path="/" element={<Header />}> */}
-      {/* auth page */}
-      <Route path="/auth/sign-up" element={<AuthPage mode="sign-up" />} />
-      <Route path="/auth/sign-in" element={<AuthPage mode="sign-in" />} />
+    <UserProvider>
+      <Routes>
+        {/* <Route path="/" element={<Header />}> */}
+        {/* auth page */}
+        <Route path="/auth/sign-up" element={<AuthPage mode="sign-up" />} />
+        <Route path="/auth/sign-in" element={<AuthPage mode="sign-in" />} />
 
-      {/* Main roster page */}
-      <Route path="/" element={<Roster />} />
+        {/* Main roster page */}
+        <Route path="/" element={<Roster />} />
 
-      <Route path="/fighters/new" element={<FighterForm />} />
-      {/* Fighter routes with nested tabs */}
-      <Route path="/fighters/:fighterId" element={<FighterLayout />}>
-        {/* Overview tab */}
-        <Route index element={<FighterPage />} />
+        <Route path="/fighters/new" element={<FighterForm />} />
+        {/* Fighter routes with nested tabs */}
+        <Route path="/fighters/:fighterId" element={<FighterLayout />}>
+          {/* Overview tab */}
+          <Route index element={<FighterPage />} />
 
-        {/* Measurements tab */}
-        <Route path="measurements" element={<MeasurementsPage />} />
-        <Route path="measurements/new" element={<MeasurementForm />} />
-        <Route
-          path="measurements/:measurementId/edit"
-          element={<MeasurementForm />}
-        />
+          {/* Measurements tab */}
+          <Route path="measurements" element={<MeasurementsPage />} />
+          <Route path="measurements/new" element={<MeasurementForm />} />
+          <Route
+            path="measurements/:measurementId/edit"
+            element={<MeasurementForm />}
+          />
 
-        {/* Fight history tab */}
-        <Route path="fights" element={<FightHistory />} />
-        <Route path="fights/new" element={<FightForm />} />
-        <Route path="fights/:fightId/edit" element={<FightForm />} />
+          {/* Fight history tab */}
+          <Route path="fights" element={<FightHistory />} />
+          <Route path="fights/new" element={<FightForm />} />
+          <Route path="fights/:fightId/edit" element={<FightForm />} />
 
-        {/* Edit fighter form */}
-        <Route path="edit" element={<FighterForm />} />
-      </Route>
-      <Route path="*" element={<div>Page not found</div>} />
-      {/* </Route> */}
-    </Routes>
+          {/* Edit fighter form */}
+          <Route path="edit" element={<FighterForm />} />
+        </Route>
+        <Route path="*" element={<div>Page not found</div>} />
+        {/* </Route> */}
+      </Routes>
+    </UserProvider>
   );
 }
