@@ -21,7 +21,11 @@ export function FighterCard({ fighter, onDelete }: Props) {
           {fighter.firstName} {fighter.lastName}
         </strong>
       </Link>
-      <button onClick={handleDelete}>x</button>
+      <button
+        onClick={handleDelete}
+        style={{ color: 'gold', backgroundColor: 'black' }}>
+        x
+      </button>
     </li>
   );
 }
