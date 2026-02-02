@@ -23,7 +23,11 @@ export function FighterCard({ fighter, onDelete }: Props) {
       </Link>
       <button
         onClick={handleDelete}
-        style={{ color: 'gold', backgroundColor: 'black' }}>
+        style={{
+          color: '#D4AF37',
+          backgroundColor: 'black',
+          border: '1.5px solid #D4AF37',
+        }}>
         x
       </button>
     </li>
