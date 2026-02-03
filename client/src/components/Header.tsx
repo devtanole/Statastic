@@ -36,7 +36,7 @@ export function Header() {
               sx={{ textDecoration: 'none', color: '#c9a24d' }}>
               Statastic
             </Typography>
-            <Button component={Link} to="/fighters" sx={{ color: '#ffffff' }}>
+            <Button component={Link} to="/fighters" sx={{ color: '#c9a24d' }}>
               Roster
             </Button>
             <Button

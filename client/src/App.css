@@ -43,3 +43,26 @@
 .read-the-docs {
   color: #888;
 }
+
+.home {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.home h1 {
+  font-size: 3rem;
+}
+
+.home-subtitle {
+  font-size: 1.25rem;
+  color: #d4af37; /* gold */
+  margin: 0.5rem;
+}
+
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  margin-left: 4.5rem;
+}

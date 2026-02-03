@@ -7,10 +7,15 @@ export function HomePage() {
   return (
     <div className="home">
       <h1>Fighter Management System</h1>
+
       <p className="home-subtitle">
-        Track fighters, records and record measurements in one place
+        Manage fighters, records, and performance data in one place.
       </p>
-      <p>First, create a fighter. Then add fight history and measurements.</p>
+
+      <p className="home-description">
+        Create fighters, track fight history, and log measurements over time.
+      </p>
+
       {user ? (
         <div className="actions">
           <p>Review your current team or add new fighters.</p>
