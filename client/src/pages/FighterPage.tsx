@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Fighter, readFighter, readFights, Fight } from '../lib/data';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 export function FighterPage() {
   const { fighterId } = useParams();
@@ -28,7 +29,19 @@ export function FighterPage() {
     load();
   }, [fighterId]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // full viewport height
+          color: '#d4af37',
+        }}>
+        <CircularProgress />
+      </div>
+    );
   if (error) return <div>Error loading fighter</div>;
   if (!fighter) return null;
 
@@ -108,11 +121,6 @@ export function FighterPage() {
           <strong>Pull Outs:</strong> {fighter.pullOuts ?? 0}
         </p>
       </section>
-
-      {/* <nav className="fighter-nav">
-        <Link to="fights">Fight History</Link>
-        <Link to="measurements">Measurements</Link>
-      </nav> */}
     </div>
   );
 }

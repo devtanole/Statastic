@@ -1,11 +1,6 @@
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-// type AuthData = {
-//   user: User;
-//   token: string;
-// }
-
 export function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();

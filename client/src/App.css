@@ -96,6 +96,15 @@
   list-style: none;
 }
 
+.tabs a {
+  color: #fff; /* default white */
+  text-decoration: none;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
 .fighter-card a {
   color: white;
   text-decoration: none;
@@ -103,4 +112,37 @@
 
 .fighter-card a:hover {
   color: #d4af37;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  color: white;
+}
+
+.tabs {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* .tabs a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+} */
+
+.tabs a.active {
+  border-bottom: 2px solid #d4af37; /* gold underline */
+  color: #d4af37;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #1f1f1f; /* subtle divider */
+  margin-bottom: 1.5rem;
 }
