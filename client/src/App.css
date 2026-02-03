@@ -66,3 +66,41 @@
   gap: 1rem;
   margin-left: 4.5rem;
 }
+
+.roster {
+  padding: 2rem 1.5rem;
+}
+
+.roster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.fighter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.fighter-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background-color: #0b0b0b;
+  border: 1px solid #1f1f1f;
+  border-radius: 6px;
+  list-style: none;
+}
+
+.fighter-card a {
+  color: white;
+  text-decoration: none;
+}
+
+.fighter-card a:hover {
+  color: #d4af37;
+}

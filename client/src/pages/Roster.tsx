@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 // import { FaPencilAlt } from 'react-icons/FaPencilAlt';
 import { Fighter, readFighters } from '../lib/data';
 import { FighterCard } from '../components/FighterCard';
+import { CircularProgress } from '@mui/material';
 
 export function Roster() {
   const [fighters, setFighters] = useState<Fighter[]>([]);
@@ -23,7 +24,19 @@ export function Roster() {
     }
     load();
   }, []);
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // full viewport height
+          color: '#d4af37',
+        }}>
+        <CircularProgress />
+      </div>
+    );
   if (error) {
     return (
       <div>
@@ -37,31 +50,23 @@ export function Roster() {
   }
 
   return (
-    <div className="container" style={{ padding: '1.5rem' }}>
-      <div className="row">
-        <div
-          className="column-full d-flex justify-between align-center"
-          style={{ paddingBottom: '1rem' }}>
-          <h1> Fighters </h1>
-          <h3>
-            <Link to="/fighters/new" className="white-text form-link">
-              + New Fighter
-            </Link>
-          </h3>
-        </div>
+    <div className="container roster">
+      <div className="roster-header">
+        <h1>Fighters</h1>
+
+        <Link to="/fighters/new" className="button">
+          + New Fighter
+        </Link>
       </div>
-      <div className="row">
-        <div className="column-full">
-          <ul className="fighter-ul">
-            {fighters.map((fighter) => (
-              <FighterCard
-                key={fighter.fighterId}
-                onDelete={handleDelete}
-                fighter={fighter}
-              />
-            ))}
-          </ul>
-        </div>
+
+      <div className="fighter-grid">
+        {fighters.map((fighter) => (
+          <FighterCard
+            key={fighter.fighterId}
+            fighter={fighter}
+            onDelete={handleDelete}
+          />
+        ))}
       </div>
     </div>
   );
