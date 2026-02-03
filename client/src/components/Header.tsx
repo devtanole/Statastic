@@ -12,11 +12,22 @@ export function Header() {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundColor: '#0b0b0b',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: '#0f0f0f', boxShadow: 'none' }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        sx={{ backgroundColor: '#0E0E0E', boxShadow: 'none' }}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography
               variant="h6"
@@ -58,7 +69,7 @@ export function Header() {
       </AppBar>
 
       <Outlet />
-    </>
+    </Box>
   );
 }
 //   return (
