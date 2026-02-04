@@ -7,6 +7,7 @@ import {
 } from '../lib/data';
 import { useEffect, useState } from 'react';
 import { MeasurementsList } from '../components/MeasurementList';
+import { CircularProgress } from '@mui/material';
 
 export function MeasurementsPage() {
   const { fighterId } = useParams();
@@ -36,7 +37,19 @@ export function MeasurementsPage() {
     fetchFighterAndData();
   }, [fighterId]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // full viewport height
+          color: '#d4af37',
+        }}>
+        <CircularProgress />
+      </div>
+    );
   if (error) return <div>{error}</div>;
   if (!fighter) return <div>Fighter not found</div>;
 

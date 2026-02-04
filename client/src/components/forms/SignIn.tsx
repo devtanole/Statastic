@@ -31,37 +31,45 @@ export function SignIn() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-white text-black">
-      <div className="w-full max-w-md p-6 border border-gray-300 rounded-md shadow-sm">
-        <h2 className="text-xl font-bold mb-4">Sign In</h2>
+    <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-black text-white">
+      <div className="w-full max-w-md p-6 border border-neutral-800 rounded-md shadow-lg bg-neutral-900">
+        <h2 className="text-xl font-bold mb-4 text-center text-[#D4AF37]">
+          Sign In
+        </h2>
         <form onSubmit={handleSubmit}>
-          <label className="block mb-3">
+          <label className="block mb-3 text-sm">
             Username
             <input
               required
               name="username"
               type="text"
-              className="mt-1 block w-full border border-gray-400 rounded p-2"
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </label>
-          <label className="block mb-3">
+          <label className="block mb-3 text-sm">
             Password
             <input
               required
               name="password"
               type="password"
-              className="mt-1 block w-full border border-gray-400 rounded p-2"
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </label>
           <button
             disabled={isLoading}
-            className="w-full py-2 rounded bg-purple-800 text-white hover:bg-gray-900 disabled:opacity-50">
+            className="
+            w-full py-2 rounded
+            bg-[#D4AF37] text-black font-semibold
+            hover:bg-[#c9a633]
+            transition
+            disabled:opacity-50
+          ">
             {isLoading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
-        <p className="mt-4 text-center text-gray-700">
+        <p className="mt-4 text-center text-sm text-gray-400">
           New user?{' '}
-          <Link to="/auth/sign-up" className="text-blue-600 hover:underline">
+          <Link to="/auth/sign-up" className="text-[#D4AF37] hover:underline">
             Sign Up
           </Link>
         </p>

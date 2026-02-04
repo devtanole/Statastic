@@ -1,5 +1,5 @@
-import { RegistrationForm } from '../components/Registration';
-import { SignIn } from '../components/SignIn';
+import { RegistrationForm } from '../components/forms/Registration';
+import { SignIn } from '../components/forms/SignIn';
 
 type Props = {
   mode: 'sign-up' | 'sign-in';

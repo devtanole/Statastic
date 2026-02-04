@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Fighter, Fight, readFighter, readFights } from '../lib/data';
 import { useEffect, useState } from 'react';
 import { FightList } from '../components/FightList';
+import { CircularProgress } from '@mui/material';
 
 export function FightHistory() {
   const { fighterId } = useParams();
@@ -29,7 +30,19 @@ export function FightHistory() {
     fetchFighterAndData();
   }, [fighterId]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // full viewport height
+          color: '#d4af37',
+        }}>
+        <CircularProgress />
+      </div>
+    );
   if (error) return <div>{error}</div>;
   if (!fighter) return <div>Fighter not found</div>;
 
