@@ -146,3 +146,71 @@ hr {
   border-top: 1px solid #1f1f1f; /* subtle divider */
   margin-bottom: 1.5rem;
 }
+
+.tabs a:hover {
+  color: #d4af37;
+}
+
+.header-link:hover {
+  color: #fff;
+}
+
+.fighter-page {
+  padding-top: 2rem;
+}
+
+/* Header */
+.fighter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.fighter-name {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.edit-link {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.edit-link:hover {
+  text-decoration: underline;
+}
+
+/* Summary */
+.fighter-summary {
+  border-top: 1px solid #1f1f1f;
+  padding-top: 1.5rem;
+}
+
+/* Record emphasis */
+.record {
+  margin-bottom: 1.5rem;
+}
+
+.record-label {
+  display: block;
+  color: #aaa;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.record-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #d4af37;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem 2rem;
+}

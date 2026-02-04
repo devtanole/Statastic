@@ -36,13 +36,18 @@ export function Header() {
               sx={{ textDecoration: 'none', color: '#c9a24d' }}>
               Statastic
             </Typography>
-            <Button component={Link} to="/fighters" sx={{ color: '#c9a24d' }}>
+            <Button
+              component={Link}
+              to="/fighters"
+              className="header-link"
+              sx={{ color: '#c9a24d' }}>
               Roster
             </Button>
             <Button
               component={Link}
               to="/fighters/new"
-              sx={{ color: '#c9a24d' }}>
+              sx={{ color: '#c9a24d' }}
+              className="header-link">
               Add Fighter
             </Button>
           </Box>

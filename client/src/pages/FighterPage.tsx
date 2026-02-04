@@ -91,35 +91,39 @@ export function FighterPage() {
   });
 
   return (
-    <div className="container">
-      <h1>
-        {fighter.firstName} {fighter.lastName}
-      </h1>
-      <Link to={`/fighters/${fighterId}/edit`}>Edit</Link>
-      <section className="fighter-summary">
-        <p>
-          <strong>Record:</strong> {wins}–{losses}
-          {draws > 0 && `–${draws}`}
-        </p>
-        <p>
-          <strong>Recorded Finishes:</strong> {finishes}
-        </p>
-
+    <div className="container fighter-page">
+      <div className="fighter-header">
+        <h1 className="fighter-name">
+          {fighter.firstName} {fighter.lastName}
+        </h1>
         <p>
           <strong>DOB:</strong> {fighter.dob.slice(0, 10)}
         </p>
+        <Link to={`/fighters/${fighterId}/edit`} className="edit-link">
+          Edit
+        </Link>
+      </div>
 
-        <p>
-          <strong>Finishes:</strong> {fighter.finishes ?? 0}
-        </p>
+      <section className="fighter-summary">
+        <div className="record">
+          <span className="record-label">Record</span>
+          <span className="record-value">
+            {wins}–{losses}
+            {draws > 0 && `–${draws}`}
+          </span>
+        </div>
 
-        <p>
-          <strong>Weight Misses:</strong> {fighter.weightMisses ?? 0}
-        </p>
-
-        <p>
-          <strong>Pull Outs:</strong> {fighter.pullOuts ?? 0}
-        </p>
+        <div className="stats-grid">
+          <p>
+            <strong>Finishes:</strong> {finishes ?? fighter.finishes}
+          </p>
+          <p>
+            <strong>Weight Misses:</strong> {fighter.weightMisses ?? 0}
+          </p>
+          <p>
+            <strong>Pull Outs:</strong> {fighter.pullOuts ?? 0}
+          </p>
+        </div>
       </section>
     </div>
   );
