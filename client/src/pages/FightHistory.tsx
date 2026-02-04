@@ -38,13 +38,19 @@ export function FightHistory() {
   }
 
   return (
-    <div className="fights">
-      <h2>
-        {fighter.firstName} {fighter.lastName}
-      </h2>
-      <Link to={`/fighters/${fighterId}/fights/new`}>+ Add Fight</Link>
+    <div className="measurements">
+      <div className="fights-header">
+        <h2 className="fighter-name">
+          {fighter.firstName} {fighter.lastName}
+        </h2>
+
+        <Link to={`/fighters/${fighterId}/fights/new`} className="add-link">
+          + Add Fight
+        </Link>
+      </div>
+
       {fights.length === 0 ? (
-        <p>No fights recorded yet.</p>
+        <p className="empty-state">No fights recorded yet.</p>
       ) : (
         <FightList
           fights={fights}

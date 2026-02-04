@@ -16,15 +16,22 @@ export function FightRow({ fight, fighterId, onDelete }: Props) {
     onDelete(fight.fightId);
   }
   return (
-    <>
-      <li>
-        {fight.date?.slice(0, 10)}: {fight.outcome} | {fight.method} |{' '}
-        {fight.promotion}
-      </li>
-      <Link to={`/fighters/${fighterId}/fights/${fight.fightId}/edit`}>
-        Edit
-      </Link>
-      <button onClick={handleDelete}>x</button>
-    </>
+    <li className="fight-row">
+      <span className="fight-text">
+        {fight.date?.slice(0, 10)} — {fight.outcome}
+        {fight.method && ` | ${fight.method}`}
+        {fight.promotion && ` | ${fight.promotion}`}
+      </span>
+
+      <div className="fight-actions">
+        <Link to={`/fighters/${fighterId}/fights/${fight.fightId}/edit`}>
+          Edit
+        </Link>
+
+        <button onClick={handleDelete} className="delete-button">
+          x
+        </button>
+      </div>
+    </li>
   );
 }
