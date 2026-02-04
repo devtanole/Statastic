@@ -48,14 +48,20 @@ export function MeasurementsPage() {
 
   return (
     <div className="measurements">
-      <h2>
-        {fighter.firstName} {fighter.lastName}
-      </h2>
-      <Link to={`/fighters/${fighterId}/measurements/new`}>
-        + Add Measurement
-      </Link>
+      <div className="measurements-header">
+        <h2 className="fighter-name">
+          {fighter.firstName} {fighter.lastName}
+        </h2>
+
+        <Link
+          to={`/fighters/${fighterId}/measurements/new`}
+          className="add-link">
+          + Add Measurement
+        </Link>
+      </div>
+
       {measurements.length === 0 ? (
-        <p>No measurements recorded yet.</p>
+        <p className="empty-state">No measurements recorded yet.</p>
       ) : (
         <MeasurementsList
           measurements={measurements}

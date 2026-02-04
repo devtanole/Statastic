@@ -19,7 +19,7 @@ formatHeight(70); // "5' 10""
 
 export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
   async function handleDelete() {
-    if (!confirm('Delete this fight?')) return;
+    if (!confirm('Delete this measurement?')) return;
 
     await removeMeasurement(measurement.measurementId, fighterId);
     onDelete(measurement.measurementId);

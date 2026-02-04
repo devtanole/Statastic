@@ -249,3 +249,39 @@ hr {
   padding: 0.2rem 0.45rem;
   cursor: pointer;
 }
+
+.measurements {
+  padding-top: 1rem;
+}
+
+/* Header */
+.measurements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.measurements .fighter-name {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+/* Add button */
+.add-link {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.add-link:hover {
+  text-decoration: underline;
+}
+
+/* Empty state */
+.empty-state {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
