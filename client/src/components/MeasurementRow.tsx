@@ -26,15 +26,23 @@ export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
   }
   return (
     <>
-      <li>
-        {measurement.dateRecorded.slice(0, 10)}:{' '}
-        {formatHeight(measurement.height)} / {measurement.weight} lbs
+      <li className="measurement-row">
+        <span className="measurement-text">
+          {measurement.dateRecorded.slice(0, 10)}:{' '}
+          {formatHeight(measurement.height)} / {measurement.weight} lbs
+        </span>
+
+        <div className="measurement-actions">
+          <Link
+            to={`/fighters/${fighterId}/measurements/${measurement.measurementId}/edit`}>
+            Edit
+          </Link>
+
+          <button onClick={handleDelete} className="delete-button">
+            x
+          </button>
+        </div>
       </li>
-      <Link
-        to={`/fighters/${fighterId}/measurements/${measurement.measurementId}/edit`}>
-        Edit
-      </Link>
-      <button onClick={handleDelete}>x</button>
     </>
   );
 }
