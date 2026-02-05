@@ -54,6 +54,20 @@ Owned the project end-to-end from planning and data modeling to feature implemen
 
 ---
 
+## Screenshots
+
+<img width="1792" height="1120" alt="Screenshot 2026-02-05 at 2 25 12 PM" src="https://github.com/user-attachments/assets/3cf45b08-c9fb-4618-a654-ff3838cb94f6" />
+![Uploading Screenshot 2026-02-05 at 2.25.12 PM.png…]()
+<img width="1792" height="1120" alt="Screenshot 2026-02-05 at 2 24 59 PM" src="https://github.com/user-attachments/assets/3c3d74bf-32e6-43f7-8bc3-af73603e28b6" />
+<img width="1792" height="1120" alt="Screenshot 2026-02-05 at 2 23 38 PM" src="https://github.com/user-attachments/assets/aafb2b62-ffa4-4c9a-97b7-36f0dec74d7f" />
+
+
+
+
+
+
+---
+
 ### 📦 Installation
 git clone https://github.com/your-username/statastic.git
 cd statastic
