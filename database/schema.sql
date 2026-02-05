@@ -1,11 +1,11 @@
-set client_min_messages to warning;
+-- Set warnings (optional, harmless)
+SET client_min_messages TO warning;
 
--- DANGER: this is NOT how to do it in the real world.
--- `drop schema` INSTANTLY ERASES EVERYTHING.
-drop schema "public" cascade;
+-- WARNING: Drops all tables in the public schema
+DROP SCHEMA IF EXISTS "public" CASCADE;
+CREATE SCHEMA "public";
 
-create schema "public";
-
+-- Users table
 CREATE TABLE "users" (
   "userId" serial PRIMARY KEY,
   "fullName" text NOT NULL,
@@ -15,6 +15,7 @@ CREATE TABLE "users" (
   "updatedAt" timestamptz NOT NULL DEFAULT now()
 );
 
+-- Fighters table
 CREATE TABLE "fighters" (
   "fighterId" serial PRIMARY KEY,
   "firstName" text NOT NULL,
@@ -28,6 +29,7 @@ CREATE TABLE "fighters" (
   "updatedAt" timestamptz NOT NULL DEFAULT now()
 );
 
+-- Fight Records table (cascades on fighter deletion)
 CREATE TABLE "fightRecords" (
   "fightId" serial PRIMARY KEY,
   "fighterId" int NOT NULL,
@@ -36,17 +38,22 @@ CREATE TABLE "fightRecords" (
   "method" varchar,
   "promotion" text,
   "createdAt" timestamptz NOT NULL DEFAULT now(),
-  "updatedAt" timestamptz NOT NULL DEFAULT now()
+  "updatedAt" timestamptz NOT NULL DEFAULT now(),
+  CONSTRAINT fk_fighter
+    FOREIGN KEY ("fighterId")
+    REFERENCES "fighters" ("fighterId")
+    ON DELETE CASCADE
 );
 
+-- Measurements table (cascades on fighter deletion)
 CREATE TABLE "measurements" (
   "measurementId" serial PRIMARY KEY,
   "fighterId" int NOT NULL,
   "height" decimal NOT NULL,
   "weight" decimal NOT NULL,
-  "dateRecorded" date NOT NULL
+  "dateRecorded" date NOT NULL,
+  CONSTRAINT fk_measure_fighter
+    FOREIGN KEY ("fighterId")
+    REFERENCES "fighters" ("fighterId")
+    ON DELETE CASCADE
 );
-
-ALTER TABLE "fightRecords" ADD FOREIGN KEY ("fighterId") REFERENCES "fighters" ("fighterId");
-
-ALTER TABLE "measurements" ADD FOREIGN KEY ("fighterId") REFERENCES "fighters" ("fighterId");
