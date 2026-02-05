@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { User } from '../useUser';
 
 export function RegistrationForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +22,10 @@ export function RegistrationForm() {
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
+      const user = (await res.json()) as User;
+      alert(
+        `Successfully registered ${user.username} as userId ${user.userId}.`
+      );
       navigate('/auth/sign-in');
     } catch (err) {
       alert(`Error registering user: ${err}`);

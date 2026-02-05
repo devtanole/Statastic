@@ -36,37 +36,41 @@ export function Header() {
               sx={{ textDecoration: 'none', color: '#c9a24d' }}>
               Statastic
             </Typography>
-            <Button
-              component={Link}
-              to="/fighters"
-              className="header-link"
-              sx={{ color: '#c9a24d' }}>
-              Roster
-            </Button>
-            <Button
-              component={Link}
-              to="/fighters/new"
-              sx={{ color: '#c9a24d' }}
-              className="header-link">
-              Add Fighter
-            </Button>
+            {user && (
+              <>
+                <Button
+                  component={Link}
+                  to="/fighters"
+                  className="header-link"
+                  sx={{ color: '#c9a24d' }}>
+                  Roster
+                </Button>
+                <Button
+                  component={Link}
+                  to="/fighters/new"
+                  sx={{ color: '#c9a24d' }}
+                  className="header-link">
+                  Add Fighter
+                </Button>
+              </>
+            )}
           </Box>
           <Box>
             {user ? (
               <Button
                 component={Link}
                 onClick={handleLogout}
-                to="/auth/sign-in"
+                to="/auth/sign-up"
                 sx={{ color: '#ffffff' }}>
-                Sign In
+                Sign Out
               </Button>
             ) : (
               <Button
                 component={Link}
                 onClick={handleLogout}
-                to="/auth/sign-up"
+                to="/auth/sign-in"
                 sx={{ color: '#ffffff' }}>
-                Create Account
+                Sign In
               </Button>
             )}
           </Box>

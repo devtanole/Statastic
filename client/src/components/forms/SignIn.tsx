@@ -1,7 +1,10 @@
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../useUser';
+import type { Auth } from '../../lib/data';
 
 export function SignIn() {
+  const { handleSignIn } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -20,6 +23,8 @@ export function SignIn() {
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
+      const { user, token } = (await res.json()) as Auth;
+      handleSignIn(user, token);
       navigate('/');
     } catch (err) {
       alert(`Error signing in: ${err}`);
