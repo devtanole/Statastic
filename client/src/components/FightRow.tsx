@@ -1,6 +1,8 @@
 import { Fight } from '../lib/data';
 import { Link } from 'react-router-dom';
 import { removeFight } from '../lib/data';
+import { ConfirmDialog } from './ConfirmDialog';
+import { useState } from 'react';
 
 type Props = {
   fight: Fight;
@@ -9,11 +11,12 @@ type Props = {
 };
 
 export function FightRow({ fight, fighterId, onDelete }: Props) {
-  async function handleDelete() {
-    if (!confirm('Delete this fight?')) return;
+  const [showConfirm, setShowConfirm] = useState(false);
 
+  async function handleDelete() {
     await removeFight(fight.fightId, fighterId);
     onDelete(fight.fightId);
+    setShowConfirm(false);
   }
   return (
     <li className="fight-row">
@@ -28,9 +31,15 @@ export function FightRow({ fight, fighterId, onDelete }: Props) {
           Edit
         </Link>
 
-        <button onClick={handleDelete} className="delete-button">
+        <button onClick={() => setShowConfirm(true)} className="delete-button">
           x
         </button>
+        <ConfirmDialog
+          open={showConfirm}
+          message="Delete this fight permanently?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirm(false)}
+        />
       </div>
     </li>
   );

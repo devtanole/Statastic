@@ -1,6 +1,8 @@
 import { Measurement } from '../lib/data';
 import { Link } from 'react-router-dom';
 import { removeMeasurement } from '../lib/data';
+import { useState } from 'react';
+import { ConfirmDialog } from './ConfirmDialog';
 
 type Props = {
   measurement: Measurement;
@@ -17,11 +19,12 @@ function formatHeight(heightInInches: number): string {
 formatHeight(70);
 
 export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
-  async function handleDelete() {
-    if (!confirm('Delete this measurement?')) return;
+  const [showConfirm, setShowConfirm] = useState(false);
 
+  async function handleDelete() {
     await removeMeasurement(measurement.measurementId, fighterId);
     onDelete(measurement.measurementId);
+    setShowConfirm(false);
   }
   return (
     <>
@@ -37,9 +40,17 @@ export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
             Edit
           </Link>
 
-          <button onClick={handleDelete} className="delete-button">
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="delete-button">
             x
           </button>
+          <ConfirmDialog
+            open={showConfirm}
+            message="Delete this measurement permanently?"
+            onConfirm={handleDelete}
+            onCancel={() => setShowConfirm(false)}
+          />
         </div>
       </li>
     </>

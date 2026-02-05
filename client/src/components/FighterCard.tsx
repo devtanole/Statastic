@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Fighter } from '../lib/data';
 import { removeFighter } from '../lib/data';
+import { useState } from 'react';
+import { ConfirmDialog } from './ConfirmDialog';
 
 type Props = {
   fighter: Fighter;
@@ -8,11 +10,12 @@ type Props = {
 };
 
 export function FighterCard({ fighter, onDelete }: Props) {
-  async function handleDelete() {
-    if (!confirm('Delete this fighter?')) return;
+  const [showConfirm, setShowConfirm] = useState(false);
 
+  async function handleDelete() {
     await removeFighter(fighter.fighterId);
     onDelete(fighter.fighterId);
+    setShowConfirm(false);
   }
   return (
     <li className="fighter-card">
@@ -21,15 +24,15 @@ export function FighterCard({ fighter, onDelete }: Props) {
           {fighter.firstName} {fighter.lastName}
         </strong>
       </Link>
-      <button
-        onClick={handleDelete}
-        style={{
-          color: '#D4AF37',
-          backgroundColor: 'black',
-          border: '1.5px solid #D4AF37',
-        }}>
+      <button onClick={() => setShowConfirm(true)} className="delete-button">
         x
       </button>
+      <ConfirmDialog
+        open={showConfirm}
+        message="Delete this fighter permanently?"
+        onConfirm={handleDelete}
+        onCancel={() => setShowConfirm(false)}
+      />
     </li>
   );
 }
