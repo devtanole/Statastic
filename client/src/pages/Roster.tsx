@@ -58,7 +58,7 @@ export function Roster() {
         </Link>
       </div>
 
-      <div className="fighter-grid">
+      <div className="fighter-grid" style={{ display: 'block' }}>
         {fighters.map((fighter) => (
           <FighterCard
             key={fighter.fighterId}
