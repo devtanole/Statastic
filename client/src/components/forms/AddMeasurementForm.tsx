@@ -81,52 +81,76 @@ export function MeasurementForm() {
   if (isLoading) return <div>Loading…</div>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>{isEditing ? 'Edit Measurement' : 'Add Measurement'}</h3>
+    <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-black text-white">
+      <div className="w-full max-w-md p-6 border border-neutral-800 rounded-md shadow-lg bg-neutral-900">
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-xl font-bold mb-4 text-center text-[#D4AF37]">
+            {isEditing ? 'Edit Measurement' : 'Add Measurement'}
+          </h2>
 
-      {error && <div className="error">{error}</div>}
+          {error && <div className="error">{error}</div>}
 
-      <label>
-        Height (inches)
-        <input
-          type="number"
-          value={height}
-          onChange={(e) =>
-            setHeight(e.target.value ? Number(e.target.value) : '')
-          }
-          required
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Height (inches)
+            <input
+              type="number"
+              value={height}
+              onChange={(e) =>
+                setHeight(e.target.value ? Number(e.target.value) : '')
+              }
+              required
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Weight (lbs)
-        <input
-          type="number"
-          value={weight}
-          onChange={(e) =>
-            setWeight(e.target.value ? Number(e.target.value) : '')
-          }
-          required
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Weight (lbs)
+            <input
+              type="number"
+              value={weight}
+              onChange={(e) =>
+                setWeight(e.target.value ? Number(e.target.value) : '')
+              }
+              required
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Date Recorded
-        <input
-          type="date"
-          value={dateRecorded}
-          onChange={(e) => setDateRecorded(e.target.value)}
-          required
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Date Recorded
+            <input
+              type="date"
+              value={dateRecorded}
+              onChange={(e) => setDateRecorded(e.target.value)}
+              required
+              className="
+    mt-1 w-full rounded
+    bg-black border border-neutral-700
+    p-2 text-white
+    focus:outline-none focus:border-[#D4AF37]
+    [color-scheme:dark]
+  "
+            />
+          </label>
 
-      <button disabled={isSubmitting}>
-        {isSubmitting
-          ? 'Saving…'
-          : isEditing
-          ? 'Update Measurement'
-          : 'Add Measurement'}
-      </button>
-    </form>
+          <button
+            disabled={isSubmitting}
+            style={{ marginTop: '1rem' }}
+            className="
+            w-full py-2 rounded
+            bg-[#D4AF37] text-black font-semibold
+            hover:bg-[#c9a633]
+            transition
+            disabled:opacity-50
+          ">
+            {isSubmitting
+              ? 'Saving…'
+              : isEditing
+              ? 'Update Measurement'
+              : 'Add Measurement'}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

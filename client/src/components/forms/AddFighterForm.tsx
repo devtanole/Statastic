@@ -119,7 +119,13 @@ export function FighterForm() {
               value={dob}
               onChange={(e) => setDob(e.target.value)}
               required
-              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+              className="
+    mt-1 w-full rounded
+    bg-black border border-neutral-700
+    p-2 text-white
+    focus:outline-none focus:border-[#D4AF37]
+    [color-scheme:dark]
+  "
             />
           </label>
 
@@ -170,7 +176,8 @@ export function FighterForm() {
             hover:bg-[#c9a633]
             transition
             disabled:opacity-50
-          ">
+          "
+            style={{ marginTop: '1rem' }}>
             {isSubmitting
               ? 'Saving…'
               : isEditing

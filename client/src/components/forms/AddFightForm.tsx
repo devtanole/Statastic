@@ -84,57 +84,67 @@ export function FightForm() {
   if (isLoading) return <div>Loading…</div>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>{isEditing ? 'Edit Fight' : 'Add Fight'}</h3>
+    <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-black text-white">
+      <div className="w-full max-w-md p-6 border border-neutral-800 rounded-md shadow-lg bg-neutral-900">
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-xl font-bold mb-4 text-center text-[#D4AF37]">
+            {isEditing ? 'Edit Fight' : 'Add Fight'}
+          </h2>
 
-      {error && <div className="error">{error}</div>}
+          {error && <div className="error">{error}</div>}
 
-      <label>
-        Date
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-      </label>
+          <label>
+            Date
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </label>
 
-      <label>
-        Outcome
-        <select
-          value={outcome}
-          onChange={(e) => setOutcome(e.target.value)}
-          required>
-          {outcomeOptions.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+          <label>
+            Outcome
+            <select
+              value={outcome}
+              onChange={(e) => setOutcome(e.target.value)}
+              required>
+              {outcomeOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
 
-      <label>
-        Method
-        <select value={method} onChange={(e) => setMethod(e.target.value)}>
-          {methodOptions.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+          <label>
+            Method
+            <select value={method} onChange={(e) => setMethod(e.target.value)}>
+              {methodOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
 
-      <label>
-        Promotion
-        <input
-          type="text"
-          value={promotion}
-          onChange={(e) => setPromotion(e.target.value)}
-        />
-      </label>
+          <label>
+            Promotion
+            <input
+              type="text"
+              value={promotion}
+              onChange={(e) => setPromotion(e.target.value)}
+            />
+          </label>
 
-      <button disabled={isSubmitting}>
-        {isSubmitting ? 'Saving…' : isEditing ? 'Update Fight' : 'Create Fight'}
-      </button>
-    </form>
+          <button disabled={isSubmitting}>
+            {isSubmitting
+              ? 'Saving…'
+              : isEditing
+              ? 'Update Fight'
+              : 'Create Fight'}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
