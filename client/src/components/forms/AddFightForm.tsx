@@ -15,6 +15,7 @@ export function FightForm() {
   const [error, setError] = useState<string | null>(null);
 
   const outcomeOptions = [
+    { value: '', label: 'Select outcome' },
     { value: 'win', label: 'Win' },
     { value: 'loss', label: 'Loss' },
     { value: 'draw', label: 'Draw' },
@@ -25,7 +26,6 @@ export function FightForm() {
     { value: '', label: 'Select method' },
     { value: 'KO', label: 'KO' },
     { value: 'TKO', label: 'TKO' },
-    { value: 'Submission', label: 'Submission' },
     { value: 'Decision', label: 'Decision' },
   ];
 
@@ -93,32 +93,40 @@ export function FightForm() {
 
           {error && <div className="error">{error}</div>}
 
-          <label>
+          <label className="block mb-3 text-sm">
             Date
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </label>
 
-          <label>
+          <label className="block mb-3 text-sm">
             Outcome
             <select
               value={outcome}
               onChange={(e) => setOutcome(e.target.value)}
-              required>
+              required
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]">
               {outcomeOptions.map((opt) => (
-                <option key={opt.value} value={opt.value}>
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]">
                   {opt.label}
                 </option>
               ))}
             </select>
           </label>
 
-          <label>
+          <label className="block mb-3 text-sm">
             Method
-            <select value={method} onChange={(e) => setMethod(e.target.value)}>
+            <select
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]">
               {methodOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
@@ -127,16 +135,25 @@ export function FightForm() {
             </select>
           </label>
 
-          <label>
+          <label className="block mb-3 text-sm">
             Promotion
             <input
               type="text"
               value={promotion}
               onChange={(e) => setPromotion(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
             />
           </label>
 
-          <button disabled={isSubmitting}>
+          <button
+            disabled={isSubmitting}
+            className="
+            w-full py-2 rounded
+            bg-[#D4AF37] text-black font-semibold
+            hover:bg-[#c9a633]
+            transition
+            disabled:opacity-50
+          ">
             {isSubmitting
               ? 'Saving…'
               : isEditing
