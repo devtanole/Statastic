@@ -62,9 +62,9 @@ export function MeasurementsPage() {
   return (
     <div className="measurements">
       <div className="measurements-header">
-        <h2 className="fighter-name">
+        <h1 className="fighter-name">
           {fighter.firstName} {fighter.lastName}
-        </h2>
+        </h1>
 
         <Link
           to={`/fighters/${fighterId}/measurements/new`}

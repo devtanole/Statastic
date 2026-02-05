@@ -12,6 +12,7 @@ import { FighterForm } from './components/forms/AddFighterForm';
 import { UserProvider } from './components/UserContext';
 import { HomePage } from './pages/Home';
 import { Header } from './components/Header';
+import { NotFound } from './pages/NotFound';
 
 export default function App() {
   return (
@@ -48,7 +49,7 @@ export default function App() {
             {/* Edit fighter form */}
             <Route path="edit" element={<FighterForm />} />
           </Route>
-          <Route path="*" element={<div>Page not found</div>} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </UserProvider>

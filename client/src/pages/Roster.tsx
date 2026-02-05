@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { FaPencilAlt } from 'react-icons/FaPencilAlt';
 import { Fighter, readFighters } from '../lib/data';
 import { FighterCard } from '../components/FighterCard';
 import { CircularProgress } from '@mui/material';

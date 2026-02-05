@@ -21,8 +21,6 @@ export function RegistrationForm() {
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
-      // const user = (await res.json()) as User;
-      // alert(`Successfully registered ${user.username} as userId ${user.userId}`);
       navigate('/auth/sign-in');
     } catch (err) {
       alert(`Error registering user: ${err}`);

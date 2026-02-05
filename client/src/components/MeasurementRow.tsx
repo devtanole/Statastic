@@ -14,8 +14,7 @@ function formatHeight(heightInInches: number): string {
   return `${feet}' ${inches}"`;
 }
 
-// Example:
-formatHeight(70); // "5' 10""
+formatHeight(70);
 
 export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
   async function handleDelete() {

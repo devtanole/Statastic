@@ -20,8 +20,6 @@ export function SignIn() {
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
-      // const { user, token } = (await res.json()) as AuthData;
-      // handleSignIn(user, token);
       navigate('/');
     } catch (err) {
       alert(`Error signing in: ${err}`);

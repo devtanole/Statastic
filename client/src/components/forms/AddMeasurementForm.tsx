@@ -6,6 +6,7 @@ import {
   readMeasurement,
   NewMeasurement,
 } from '../../lib/data';
+import { CircularProgress } from '@mui/material';
 
 export function MeasurementForm() {
   const { fighterId, measurementId } = useParams();
@@ -78,7 +79,19 @@ export function MeasurementForm() {
     }
   }
 
-  if (isLoading) return <div>Loading…</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // full viewport height
+          color: '#d4af37',
+        }}>
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-black text-white">

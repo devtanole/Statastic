@@ -1,6 +1,7 @@
 import { FormEvent, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { addFight, NewFight, updateFight, readFight } from '../../lib/data';
+import { CircularProgress } from '@mui/material';
 
 export function FightForm() {
   const { fighterId, fightId } = useParams();
@@ -81,7 +82,19 @@ export function FightForm() {
     }
   }
 
-  if (isLoading) return <div>Loading…</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // full viewport height
+          color: '#d4af37',
+        }}>
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-black text-white">
