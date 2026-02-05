@@ -1,6 +1,6 @@
 # 📊 Statastic — Fighter Management System
 
-Statastic is a full-stack web application for managing combat sports fighters, fight history, and performance measurements in one centralized system. The app is designed around real gym workflows, allowing authenticated users to track records, monitor physical data, and manage fighter profiles efficiently.
+Statastic is a full-stack web application for managing combat sports fighters, fight history, and performance measurements in one centralized system. Developed in collaboration with a local Muay Thai gym to support real-world fighter tracking and gym management workflows. The app is designed around real gym workflows, allowing authenticated users to track records, monitor physical data, and manage fighter profiles efficiently.
 
 ## 🚀 Features
 
