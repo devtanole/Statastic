@@ -19,13 +19,15 @@ export function FightRow({ fight, fighterId, onDelete }: Props) {
     setShowConfirm(false);
   }
   return (
-    <li className="fight-row">
-      <span className="fight-text">
-        {fight.date?.slice(0, 10)} — {fight.outcome}
-        {fight.method && ` | ${fight.method}`}
-        {fight.promotion && ` | ${fight.promotion}`}
-      </span>
-
+    <li className="flex justify-between items-center py-3 border-b border-neutral-800">
+      <div>
+        <div className="text-sm text-gray-400">{fight.date?.slice(0, 10)}</div>
+        <div className="font-medium">
+          {fight.outcome}
+          {fight.method && ` · ${fight.method}`}
+          {fight.promotion && ` · ${fight.promotion}`}
+        </div>
+      </div>
       <div className="fight-actions">
         <Link to={`/fighters/${fighterId}/fights/${fight.fightId}/edit`}>
           Edit

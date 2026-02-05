@@ -28,15 +28,21 @@ export function MeasurementRow({ measurement, fighterId, onDelete }: Props) {
   }
   return (
     <>
-      <li className="measurement-row">
-        <span className="measurement-text">
-          {measurement.dateRecorded.slice(0, 10)}:{' '}
-          {formatHeight(measurement.height)} / {measurement.weight} lbs
-        </span>
+      <li className="flex justify-between items-center py-3 border-b border-neutral-800">
+        <div>
+          <div className="text-sm text-gray-400">
+            {measurement.dateRecorded.slice(0, 10)}
+          </div>
 
-        <div className="measurement-actions">
+          <div className="font-medium">
+            {formatHeight(measurement.height)} · {measurement.weight} lbs
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
           <Link
-            to={`/fighters/${fighterId}/measurements/${measurement.measurementId}/edit`}>
+            to={`/fighters/${fighterId}/measurements/${measurement.measurementId}/edit`}
+            className="text-sm text-[#D4AF37] hover:underline">
             Edit
           </Link>
 

@@ -27,7 +27,7 @@ export function FightForm() {
     { value: '', label: 'Select method' },
     { value: 'KO', label: 'KO' },
     { value: 'TKO', label: 'TKO' },
-    { value: 'Decision', label: 'Decision' },
+    { value: 'DEC', label: 'DEC' },
   ];
 
   useEffect(() => {
@@ -112,7 +112,13 @@ export function FightForm() {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+              className="
+    mt-1 w-full rounded
+    bg-black border border-neutral-700
+    p-2 text-white
+    focus:outline-none focus:border-[#D4AF37]
+    [color-scheme:dark]
+  "
             />
           </label>
 
