@@ -83,78 +83,102 @@ export function FighterForm() {
   if (isLoading) return <div>Loading…</div>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{isEditing ? 'Edit Fighter' : 'Add Fighter'}</h2>
+    <div className="min-h-screen flex flex-col items-center pt-12 px-4 bg-black text-white">
+      <div className="w-full max-w-md p-6 border border-neutral-800 rounded-md shadow-lg bg-neutral-900">
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-xl font-bold mb-4 text-center text-[#D4AF37]">
+            {isEditing ? 'Edit Fighter' : 'Add Fighter'}
+          </h2>
 
-      {error && <div className="error">{error}</div>}
+          {error && <div className="error">{error}</div>}
 
-      <label>
-        First Name
-        <input
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            First Name
+            <input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+              required
+            />
+          </label>
 
-      <label>
-        Last Name
-        <input
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Last Name
+            <input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Date of Birth
-        <input
-          type="date"
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-          required
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Date of Birth
+            <input
+              type="date"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              required
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Finishes
-        <input
-          type="number"
-          value={finishes}
-          onChange={(e) => setFinishes(e.target.value)}
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Finishes
+            <input
+              type="number"
+              value={finishes}
+              onChange={(e) => setFinishes(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Weight Misses
-        <input
-          type="number"
-          value={weightMisses}
-          onChange={(e) => setWeightMisses(e.target.value)}
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Weight Misses
+            <input
+              type="number"
+              value={weightMisses}
+              onChange={(e) => setWeightMisses(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Pull Outs
-        <input
-          type="number"
-          value={pullOuts}
-          onChange={(e) => setPullOuts(e.target.value)}
-        />
-      </label>
+          <label className="block mb-3 text-sm">
+            Pull Outs
+            <input
+              type="number"
+              value={pullOuts}
+              onChange={(e) => setPullOuts(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <label>
-        Notes
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
-      </label>
+          <label className="block mb-3 text-sm">
+            Notes
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="mt-1 block w-full rounded p-2 bg-black border border-neutral-700 text-white focus:outline-none focus:border-[#D4AF37]"
+            />
+          </label>
 
-      <button disabled={isSubmitting}>
-        {isSubmitting
-          ? 'Saving…'
-          : isEditing
-          ? 'Update Fighter'
-          : 'Create Fighter'}
-      </button>
-    </form>
+          <button
+            disabled={isSubmitting}
+            className="
+            w-full py-2 rounded
+            bg-[#D4AF37] text-black font-semibold
+            hover:bg-[#c9a633]
+            transition
+            disabled:opacity-50
+          ">
+            {isSubmitting
+              ? 'Saving…'
+              : isEditing
+              ? 'Update Fighter'
+              : 'Create Fighter'}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
